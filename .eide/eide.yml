@@ -1,0 +1,204 @@
+version: "4.1"
+name: ecbm
+type: C51
+deviceName: null
+packDir: null
+srcDirs: []
+virtualFolder:
+  name: <virtual_root>
+  files: []
+  folders:
+    - name: 用户文件
+      files:
+        - path: main.c
+        - path: STARTUP.A51
+      folders: []
+    - name: 配置文件
+      files: []
+      folders:
+        - name: 头文件
+          files:
+            - path: ECBM_LIB/ecbm_reg.h
+            - path: ECBM_LIB/ecbm_core.h
+            - path: ECBM_LIB/gpio.h
+            - path: ECBM_LIB/power.h
+            - path: ECBM_LIB/uart.h
+            - path: ECBM_LIB/exti.h
+            - path: ECBM_LIB/timer.h
+            - path: ECBM_LIB/eeprom.h
+            - path: ECBM_LIB/spi.h
+            - path: ECBM_LIB/soft_spi.h
+            - path: ECBM_LIB/iic.h
+            - path: ECBM_LIB/soft_iic.h
+            - path: ECBM_LIB/adc.h
+            - path: ECBM_LIB/cmp.h
+            - path: ECBM_LIB/mdu16.h
+            - path: ECBM_LIB/pca.h
+            - path: ECBM_LIB/pwm.h
+            - path: ECBM_LIB/lcm.h
+            - path: ECBM_LIB/nvic.h
+            - path: ECBM_LIB/led.h
+            - path: ECBM_LIB/eds.h
+            - path: ECBM_LIB/lcd.h
+            - path: ECBM_LIB/stream.h
+            - path: ECBM_LIB/stream_ecp.h
+            - path: ECBM_LIB/stream_fur.h
+            - path: ECBM_LIB/stream_modbus.h
+            - path: ECBM_LIB/beep.h
+            - path: ECBM_LIB/pwm16_out.h
+          folders: []
+    - name: 库本体
+      files: []
+      folders:
+        - name: C文件
+          files:
+            - path: ECBM_LIB/ecbm_core.c
+            - path: ECBM_LIB/gpio.c
+            - path: ECBM_LIB/power.c
+            - path: ECBM_LIB/uart.c
+            - path: ECBM_LIB/exti.c
+            - path: ECBM_LIB/timer.c
+            - path: ECBM_LIB/eeprom.c
+            - path: ECBM_LIB/spi.c
+            - path: ECBM_LIB/soft_spi.c
+            - path: ECBM_LIB/iic.c
+            - path: ECBM_LIB/soft_iic.c
+            - path: ECBM_LIB/adc.c
+            - path: ECBM_LIB/cmp.c
+            - path: ECBM_LIB/mdu16.c
+            - path: ECBM_LIB/pca.c
+            - path: ECBM_LIB/pwm.c
+            - path: ECBM_LIB/lcm.c
+            - path: ECBM_LIB/nvic.c
+            - path: ECBM_LIB/led.c
+            - path: ECBM_LIB/lcd.c
+            - path: ECBM_LIB/eds.c
+            - path: ECBM_LIB/stream.c
+            - path: ECBM_LIB/stream_ecp.c
+            - path: ECBM_LIB/stream_fur.c
+            - path: ECBM_LIB/stream_modbus.c
+            - path: ECBM_LIB/beep.c
+            - path: ECBM_LIB/pwm16_out.c
+          folders: []
+    - name: 器件驱动
+      files: []
+      folders: []
+dependenceList: []
+outDir: build
+miscInfo:
+  uid: a1c32b24f87bfe33fba16203f2b800ca
+targets:
+  ECBMV3:
+    cppPreprocessAttrs:
+      defineList: []
+      incList:
+        - ECBM_LIB
+        - device
+      libList: []
+    excludeList: []
+    toolchain: GNU_SDCC_MCS51
+    toolchainConfigMap:
+      COSMIC_STM8:
+        linkerScript: "null"
+        options:
+          version: 1
+          afterBuildTasks: []
+          asm-compiler: {}
+          beforeBuildTasks: []
+          c/cpp-compiler:
+            c99-mode: true
+            optimization: size
+            split-functions: true
+            warnings: all
+          global:
+            model: large-0
+            output-debug-info: enable
+            output-list-file: true
+          linker:
+            auto-include-stdc-libraries: true
+            output-format: elf
+      GNU_SDCC_MCS51:
+        linkerScript: "null"
+        options:
+          version: 1
+          afterBuildTasks: []
+          asm-compiler: {}
+          beforeBuildTasks: []
+          c/cpp-compiler:
+            language-c: c99
+          global:
+            code-size: "8192"
+            iram-size: "128"
+            mem-model: small
+            optimize-type: speed
+            xram-size: "0"
+          linker:
+            output-format: elf
+            remove-unused-input-sections: true
+      IAR_STM8:
+        options:
+          version: 5
+          afterBuildTasks: []
+          asm-compiler:
+            case-sensitive-user-symbols: true
+          beforeBuildTasks: []
+          c/cpp-compiler:
+            destroy-cpp-static-object: true
+            optimization: no
+            runtime-lib: normal
+          global:
+            code-mode: small
+            data-mode: medium
+            math-functions: default
+            output-debug-info: enable
+            printf-formatter: tiny
+            scanf-formatter: small
+          linker:
+            auto-search-runtime-lib: true
+            config-defines:
+              - _CSTACK_SIZE=0x0200
+              - _HEAP_SIZE=0x0000
+            linker-config: lnkstm8s103f3.icf
+            output-format: elf
+            use-C_SPY-debug-lib: true
+      Keil_C51:
+        options:
+          version: 2
+          afterBuildTasks: []
+          asm-compiler: {}
+          beforeBuildTasks: []
+          c/cpp-compiler:
+            optimization-level: level-8
+            optimization-type: SPEED
+          global:
+            ram-mode: LARGE
+            rom-mode: LARGE
+          linker:
+            misc-controls: ""
+            output-format: elf
+            remove-unused: true
+      SDCC:
+        options:
+          version: 3
+          afterBuildTasks: []
+          asm-compiler: {}
+          beforeBuildTasks: []
+          c/cpp-compiler:
+            language-c: c89
+          global:
+            device: mcs51
+            optimize-type: speed
+          linker:
+            $mainFileName: main
+            output-format: hex
+    uploadConfigMap:
+      Custom:
+        bin: ""
+        commandLine: python ./tools/stcflash.py -p 9600 "${programFile}"
+        eraseChipCommand: ""
+      stcgal:
+        bin: ""
+        eepromImgPath: "null"
+        extraOptions: ""
+        options: .eide/stc.flash.json
+    uploader: stcgal
