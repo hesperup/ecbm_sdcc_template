@@ -195,6 +195,11 @@ void timer_set_timer_mode(u8 id,u16 us){
     }else if(us<=max_12T_u16){
         n_u16=12;
         value_u16=65536-(u16)((float)us*((float)(ECBM_SYSCLK_SETTING)/12.0/1000000.0));
+    }else{
+        /* Requested period too large for timer in either 1T or 12T modes.
+           Cap to maximum representable value (use 12T max). */
+        n_u16 = 12;
+        value_u16 = 65536 - (u16)((float)max_12T_u16 * ((float)(ECBM_SYSCLK_SETTING) / 12.0 / 1000000.0));
     }
     switch(id){
         default:break;

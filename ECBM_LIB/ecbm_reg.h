@@ -146,7 +146,9 @@ __sfr __at(0xA8) IE;
 __sfr __at(0xA9) SADDR;
 __sfr __at(0xAA) WKTCL;
 __sfr __at(0xAB) WKTCH;
-__sfr16 __at(0xAA) WKTC;
+/* Note: some SDCC versions warn about __sfr16 absolute addresses.
+	Use separate byte registers (WKTCL/WKTCH) and access via macros
+	to avoid "absolute address for __sfr ... probably out of range" warnings. */
 __sfr __at(0xAC) S3CON;
 __sfr __at(0xAD) S3BUF;
 __sfr __at(0xAE) TA;
@@ -838,6 +840,13 @@ __sbit __at(0xB6) P36;
 #define SPFUNC                      read_xdata_u8(0xFE08)
 #define RSTFLAG                     read_xdata_u8(0xFE09)
 
+/* Pull-up registers: keep using the read/write macros which expand
+   to lvalues (via pointer dereference). The SDCC __xdata + __at
+   declaration variant caused syntax issues on some toolchains, so
+   prefer the portable macro form to preserve assignability. */
+#if 0
+/* Disabled: volatile __xdata u8 declarations caused syntax errors */
+#else
 #define P0PU                        read_xdata_u8(0xFE10)
 #define P1PU                        read_xdata_u8(0xFE11)
 #define P2PU                        read_xdata_u8(0xFE12)
@@ -846,6 +855,7 @@ __sbit __at(0xB6) P36;
 #define P5PU                        read_xdata_u8(0xFE15)
 #define P6PU                        read_xdata_u8(0xFE16)
 #define P7PU                        read_xdata_u8(0xFE17)
+#endif
 
 #define P0NCS                       read_xdata_u8(0xFE18)
 #define P1NCS                       read_xdata_u8(0xFE19)
@@ -856,6 +866,10 @@ __sbit __at(0xB6) P36;
 #define P6NCS                       read_xdata_u8(0xFE1E)
 #define P7NCS                       read_xdata_u8(0xFE1F)
 
+/* Drive/slew-rate registers: use macro form for portability */
+#if 0
+/* Disabled: volatile __xdata u8 declarations caused syntax errors */
+#else
 #define P0SR                        read_xdata_u8(0xFE20)
 #define P1SR                        read_xdata_u8(0xFE21)
 #define P2SR                        read_xdata_u8(0xFE22)
@@ -864,7 +878,12 @@ __sbit __at(0xB6) P36;
 #define P5SR                        read_xdata_u8(0xFE25)
 #define P6SR                        read_xdata_u8(0xFE26)
 #define P7SR                        read_xdata_u8(0xFE27)
+#endif
 
+/* Drive strength/current registers: use macro form for portability */
+#if 0
+/* Disabled: volatile __xdata u8 declarations caused syntax errors */
+#else
 #define P0DR                        read_xdata_u8(0xFE28)
 #define P1DR                        read_xdata_u8(0xFE29)
 #define P2DR                        read_xdata_u8(0xFE2A)
@@ -873,6 +892,7 @@ __sbit __at(0xB6) P36;
 #define P5DR                        read_xdata_u8(0xFE2D)
 #define P6DR                        read_xdata_u8(0xFE2E)
 #define P7DR                        read_xdata_u8(0xFE2F)
+#endif
 
 #define P0IE                        read_xdata_u8(0xFE30)
 #define P1IE                        read_xdata_u8(0xFE31)
@@ -1650,8 +1670,8 @@ __sbit __at(0xB6) P36;
 #define WKT_ON                      REG_SET_BIT(WKTCH,WKTEN)
 #define WKT_OFF                     REG_RESET_BIT(WKTCH,WKTEN)
 
-#define WKT_SET_REG_COUNT(value)    do{WKTC=(u16)(value);}while(0)
-#define WKT_GET_REG_COUNT           (WKTC)
+#define WKT_SET_REG_COUNT(value)    do{WKTCL=(u8)(value); WKTCH=(u8)((value)>>8);}while(0)
+#define WKT_GET_REG_COUNT           ((((u16)WKTCH)<<8)|(u16)WKTCL)
 
 
 
