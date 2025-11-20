@@ -16,3 +16,4 @@
 # eide template
 *.ept
 *.eide-template
+Makefile
