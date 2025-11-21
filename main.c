@@ -12,8 +12,8 @@ u16 j;
 
 void Init_Timer0(void);
 
-/* void Timer0_isr(void) __interrupt 1;*/
-void nvic_timer0_function(void) __interrupt (1);
+/* void Timer0_isr(void) interrupt 1;*/
+void nvic_timer0_function(void) interrupt (1);
 
 void Init_Timer0(void)		
 {
@@ -26,7 +26,7 @@ void Init_Timer0(void)
 }
 
 /*
-void Timer0_isr(void) __interrupt 1
+void Timer0_isr(void) interrupt 1
 {
 	TH0=0x00;		 
 	TL0=0x00;
