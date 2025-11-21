@@ -1,5 +1,6 @@
 #include "ecbm_core.h"
 
+
 #if (ECBM_AUTO_DOWNLOAD_EN)
 #   if (ECBM_UART_LIB_EN==0)
 #       warning 因串口库未使能,自动下载功能失效!

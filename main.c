@@ -37,7 +37,7 @@ void main(void){
     count = 0;  
     system_init();
     timer_init();
-    timer_set_timer_mode(0,10000);
+    timer_set_timer_mode(0,30000);
     timer_start(0);
     P1 = 0x00;
      for( j=200;j>0;j--)
@@ -56,7 +56,7 @@ void timer0_it_callback(void){
    /* P1 = ~P1; */
   if (count-- == 0) 
   {
-    count = 1000; 
+    count = 333; 
     P1 = ~P1;
   }
   

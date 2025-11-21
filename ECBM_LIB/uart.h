@@ -490,10 +490,12 @@
 #define UART4_PIN_P02_P03 (0x00)
 #define UART4_PIN_P52_P53 (0x04)
 
-extern bit uart1_busy_gb;
+
+
+/* extern bit uart1_busy_gb;
 extern bit uart2_busy_gb;
 extern bit uart3_busy_gb;
-extern bit uart4_busy_gb;
+extern bit uart4_busy_gb; */
 extern u8 xdata uart1_tx_buf[ECBM_UART1_TX_BUF_MASK+1];
 extern u8 data  uart1_tx_buf_write_point;
 extern u8 data  uart1_tx_buf_read_point;

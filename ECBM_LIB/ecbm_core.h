@@ -37,7 +37,7 @@
 
 
 
-#define ECBM_MCU_CHECK_EN  (0)
+#define ECBM_MCU_CHECK_EN  (1)
 
 
 

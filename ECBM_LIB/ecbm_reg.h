@@ -2,31 +2,69 @@
 #define _ECBM_REG_H_
 
 
-#ifdef __SDCC
+/* #ifdef __SDCC
 #include "keil_compat.h"
+#endif */
+
+
+
+#if defined(SDCC) || defined(__SDCC)
+#define SBIT(name, addr, bit) __sbit __at(addr + bit) name
+#define SFR(name, addr) __sfr __at(addr) name
+#define SFRX(name, addr) __xdata volatile unsigned char __at(addr) name
+#define SFR16(name, addr) __sfr16 __at(((addr + 1U) << 8) | addr) name
+#define SFR16E(name, fulladdr) __sfr16 __at(fulladdr) name
+#define SFR16LEX(name, addr) __xdata volatile unsigned short __at(addr) name
+#define SFR32(name, addr) __sfr32 __at(((addr + 3UL) << 24) | ((addr + 2UL) << 16) | ((addr + 1UL) << 8) | addr) name
+#define SFR32E(name, fulladdr) __sfr32 __at(fulladdr) name
+
+#define INTERRUPT(name, vector) void name(void) __interrupt(vector)
+#define INTERRUPT_USING(name, vector, regnum) void name(void) __interrupt(vector) __using(regnum)
+
+#ifndef bit
+typedef unsigned char bit;
 #endif
 
+#define reentrant __reentrant
+#define compact
+#define small __near
+#define large __far
+#define data __data
+#define bdata
+#define idata __idata
+#define pdata __pdata
+#define xdata __xdata
+#define code __code
+// NOP () macro support
+#define NOP() __asm NOP __endasm
+#define interrupt __interrupt
+#define using __using
+#define _at_ __at
+#define _priority_
+#define _task_
+/** Keil C51
+  * http://www.keil.com
+ */
+#elif defined __CX51__
+#define SBIT(name, addr, bit) sbit name = addr ^ bit
+#define SFR(name, addr) sfr name = addr
+#define SFRX(name, addr) volatile unsigned char xdata name _at_ addr
+#define SFR16(name, addr) sfr16 name = addr
+#define SFR16E(name, fulladdr) /* not supported */
+#define SFR16LEX(name, addr)   /* not supported */
+#define SFR32(name, fulladdr)  /* not supported */
+#define SFR32E(name, fulladdr) /* not supported */
+
+#define INTERRUPT(name, vector) void name(void) interrupt vector
+#define INTERRUPT_USING(name, vector, regnum) void name(void) interrupt vector using regnum
 
 
 
+// NOP () macro support
+extern void _nop_(void);
+#define NOP() _nop_()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif
 
 
 
@@ -34,17 +72,7 @@
 #define ECBM_MCU (0x4805C4)
 
 
-
-
-
-
-
-
-
-
 #define ECBM_MCU_ROM_SIZE (64)
-
-
 
 #define __IO     volatile
 typedef unsigned char u8;
@@ -302,30 +330,75 @@ __sfr __at(0xFF) RSTCFG;
 #if 1
 /* Restored bit-addressable sbits for SDCC */
 /* TCON (0x88) bits */
-__sbit __at(0x40) IT0;
-__sbit __at(0x41) IE0;
-__sbit __at(0x42) IT1;
-__sbit __at(0x43) IE1;
-__sbit __at(0x44) TR0;
-__sbit __at(0x45) TF0;
-__sbit __at(0x46) TR1;
-__sbit __at(0x47) TF1;
+/* __sbit __at(0x80) IT0;
+__sbit __at(0x81) IE0;
+__sbit __at(0x82) IT1;
+__sbit __at(0x83) IE1;
+__sbit __at(0x84) TR0;
+__sbit __at(0x85) TF0;
+__sbit __at(0x86) TR1;
+__sbit __at(0x87) TF1; */
 
-/* IE (0xA8) bits */
-__sbit __at(0x140) EX0;
-__sbit __at(0x141) ET0;
-__sbit __at(0x142) EX1;
-__sbit __at(0x143) ET1;
-__sbit __at(0x144) ES;
-__sbit __at(0x147) EA;
+ SBIT(IT0, 0x80, 0);
+ SBIT(IE0, 0x80, 1);
+ SBIT(IT1, 0x80, 2);
+ SBIT(IE1, 0x80, 3);
+ SBIT(TR0, 0x80, 4);
+ SBIT(TF0, 0x80, 5);
+ SBIT(TR1, 0x80, 6);
+ SBIT(TF1, 0x80, 7);
 
-/* IP (0xB8) bits (priority low bits) */
-__sbit __at(0x1C0) PX0;
-__sbit __at(0x1C1) PT0;
-__sbit __at(0x1C2) PX1;
-__sbit __at(0x1C3) PT1;
-__sbit __at(0x1C4) PS;
-__sbit __at(0xB6) P36;
+/*need to fix IE (0xA8) bits */
+/* __sbit __at(0xA0) EX0;
+__sbit __at(0xA1) ET0;
+__sbit __at(0xA2) EX1;
+__sbit __at(0xA3) ET1;
+__sbit __at(0xA4) ES;
+__sbit __at(0xA7) EA; */
+ SBIT(EX0, 0xA8, 0);
+ SBIT(ET0, 0xA8, 1);
+ SBIT(EX1, 0xA8, 2);
+ SBIT(ET1, 0xA8, 3);
+ SBIT(ES, 0xA8, 4);
+ SBIT(EADC, 0xA8, 5);
+ SBIT(ELVD, 0xA8, 6);
+ SBIT(EA, 0xA8, 7);
+
+/* need to fix IP (0xB8) bits (priority low bits) */
+/* __sbit __at(0xB0) PX0;
+__sbit __at(0xB1) PT0;
+__sbit __at(0xB2) PX1;
+__sbit __at(0xB3) PT1;
+__sbit __at(0xB4) PS; 
+__sbit __at(0xB6) P36;*/
+
+ SBIT(PX0, 0xB8, 0);
+ SBIT(PT0, 0xB8, 1);
+ SBIT(PX1, 0xB8, 2);
+ SBIT(PT1, 0xB8, 3);
+ SBIT(PS, 0xB8, 4);
+ SBIT(PADC, 0xB8, 5);
+ SBIT(PLVD, 0xB8, 6);
+
+
+/* need to fix SCON(0x98)bits*/
+/* __sbit __at(0x90) SM0;
+__sbit __at(0x91) SM1;
+__sbit __at(0x92) SM2;
+__sbit __at(0x93) REN;
+__sbit __at(0x94) TB8;
+__sbit __at(0x95) RB8;
+__sbit __at(0x96) TI;
+__sbit __at(0x97) RI; */
+ SBIT(SM0, 0x98, 7);
+ SBIT(SM1, 0x98, 6);
+ SBIT(SM2, 0x98, 5);
+ SBIT(REN, 0x98, 4);
+ SBIT(TB8, 0x98, 3);
+ SBIT(RB8, 0x98, 2);
+ SBIT(TI, 0x98, 1);
+ SBIT(RI, 0x98, 0);
+
 
 #endif
 #if 1
@@ -2173,77 +2246,161 @@ __sbit __at(0xB6) P36;
 #define ADC_IT_NUM                  interrupt 5
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*-------------------------------I/O口特殊功能寄存器-----------------------------*/
+/* sbit    P00                         =P0^0;  //P0.0口
+sbit    P01                         =P0^1;  //P0.1口
+sbit    P02                         =P0^2;  //P0.2口
+sbit    P03                         =P0^3;  //P0.3口
+sbit    P04                         =P0^4;  //P0.4口
+sbit    P05                         =P0^5;  //P0.5口
+sbit    P06                         =P0^6;  //P0.6口
+sbit    P07                         =P0^7;  //P0.7口
+sbit    P10                         =P1^0;  //P1.0口
+sbit    P11                         =P1^1;  //P1.1口
+sbit    P12                         =P1^2;  //P1.2口
+sbit    P13                         =P1^3;  //P1.3口
+sbit    P14                         =P1^4;  //P1.4口
+sbit    P15                         =P1^5;  //P1.5口
+sbit    P16                         =P1^6;  //P1.6口
+sbit    P17                         =P1^7;  //P1.7口
+sbit    P20                         =P2^0;  //P2.0口
+sbit    P21                         =P2^1;  //P2.1口
+sbit    P22                         =P2^2;  //P2.2口
+sbit    P23                         =P2^3;  //P2.3口
+sbit    P24                         =P2^4;  //P2.4口
+sbit    P25                         =P2^5;  //P2.5口
+sbit    P26                         =P2^6;  //P2.6口
+sbit    P27                         =P2^7;  //P2.7口
+sbit    P30                         =P3^0;  //P3.0口
+sbit    P31                         =P3^1;  //P3.1口
+sbit    P32                         =P3^2;  //P3.2口
+sbit    P33                         =P3^3;  //P3.3口
+sbit    P34                         =P3^4;  //P3.4口
+sbit    P35                         =P3^5;  //P3.5口
+sbit    P36                         =P3^6;  //P3.6口
+sbit    P37                         =P3^7;  //P3.7口
+sbit    P40                         =P4^0;  //P4.0口
+sbit    P41                         =P4^1;  //P4.1口
+sbit    P42                         =P4^2;  //P4.2口
+sbit    P43                         =P4^3;  //P4.3口
+sbit    P44                         =P4^4;  //P4.4口
+sbit    P45                         =P4^5;  //P4.5口
+sbit    P46                         =P4^6;  //P4.6口
+sbit    P47                         =P4^7;  //P4.7口
+sbit    P50                         =P5^0;  //P5.0口
+sbit    P51                         =P5^1;  //P5.1口
+sbit    P52                         =P5^2;  //P5.2口
+sbit    P53                         =P5^3;  //P5.3口
+sbit    P54                         =P5^4;  //P5.4口
+sbit    P55                         =P5^5;  //P5.5口
+sbit    P56                         =P5^6;  //P5.6口
+sbit    P57                         =P5^7;  //P5.7口
+sbit    P60                         =P6^0;  //P6.0口
+sbit    P61                         =P6^1;  //P6.1口
+sbit    P62                         =P6^2;  //P6.2口
+sbit    P63                         =P6^3;  //P6.3口
+sbit    P64                         =P6^4;  //P6.4口
+sbit    P65                         =P6^5;  //P6.5口
+sbit    P66                         =P6^6;  //P6.6口
+sbit    P67                         =P6^7;  //P6.7口
+sbit    P70                         =P7^0;  //P7.0口
+sbit    P71                         =P7^1;  //P7.1口
+sbit    P72                         =P7^2;  //P7.2口
+sbit    P73                         =P7^3;  //P7.3口
+sbit    P74                         =P7^4;  //P7.4口
+sbit    P75                         =P7^5;  //P7.5口
+sbit    P76                         =P7^6;  //P7.6口
+sbit    P77                         =P7^7;  //P7.7口 */
+
+
+ SBIT(P00, 0x80, 0);
+ SBIT(P01, 0x80, 1);
+ SBIT(P02, 0x80, 2);
+ SBIT(P03, 0x80, 3);
+ SBIT(P04, 0x80, 4);
+ SBIT(P05, 0x80, 5);
+ SBIT(P06, 0x80, 6);
+ SBIT(P07, 0x80, 7);
+
+ SBIT(P10, 0x90, 0);
+ SBIT(P11, 0x90, 1);
+ SBIT(P12, 0x90, 2);
+ SBIT(P13, 0x90, 3);
+ SBIT(P14, 0x90, 4);
+ SBIT(P15, 0x90, 5);
+ SBIT(P16, 0x90, 6);
+ SBIT(P17, 0x90, 7);
+
+ SBIT(P20, 0xA0, 0);
+ SBIT(P21, 0xA0, 1);
+ SBIT(P22, 0xA0, 2);
+ SBIT(P23, 0xA0, 3);
+ SBIT(P24, 0xA0, 4);
+ SBIT(P25, 0xA0, 5);
+ SBIT(P26, 0xA0, 6);
+ SBIT(P27, 0xA0, 7);
+
+ SBIT(P30, 0xB0, 0);
+ SBIT(P31, 0xB0, 1);
+ SBIT(P32, 0xB0, 2);
+ SBIT(P33, 0xB0, 3);
+ SBIT(P34, 0xB0, 4);
+ SBIT(P35, 0xB0, 5);
+ SBIT(P36, 0xB0, 6);
+ SBIT(P37, 0xB0, 7);
+
+ SBIT(P40, 0xC0, 0);
+ SBIT(P41, 0xC0, 1);
+ SBIT(P42, 0xC0, 2);
+ SBIT(P43, 0xC0, 3);
+ SBIT(P44, 0xC0, 4);
+ SBIT(P45, 0xC0, 5);
+ SBIT(P46, 0xC0, 6);
+ SBIT(P47, 0xC0, 7);
+
+ SBIT(P50, 0xC8, 0);
+ SBIT(P51, 0xC8, 1);
+ SBIT(P52, 0xC8, 2);
+ SBIT(P53, 0xC8, 3);
+ SBIT(P54, 0xC8, 4);
+ SBIT(P55, 0xC8, 5);
+ SBIT(P56, 0xC8, 6);
+ SBIT(P57, 0xC8, 7);
+
+ SBIT(P60, 0xE8, 0);
+ SBIT(P61, 0xE8, 1);
+ SBIT(P62, 0xE8, 2);
+ SBIT(P63, 0xE8, 3);
+ SBIT(P64, 0xE8, 4);
+ SBIT(P65, 0xE8, 5);
+ SBIT(P66, 0xE8, 6);
+ SBIT(P67, 0xE8, 7);
+
+ SBIT(P70, 0xF8, 0);
+ SBIT(P71, 0xF8, 1);
+ SBIT(P72, 0xF8, 2);
+ SBIT(P73, 0xF8, 3);
+ SBIT(P74, 0xF8, 4);
+ SBIT(P75, 0xF8, 5);
+ SBIT(P76, 0xF8, 6);
+ SBIT(P77, 0xF8, 7);
+
+/*--------------------------------内核特殊功能寄存器------------------------------*/
+/* sbit    CY                          =PSW^7;
+sbit    AC                          =PSW^6;
+sbit    F0                          =PSW^5; 
+sbit    RS1                         =PSW^4; 
+sbit    RS0                         =PSW^3;
+sbit    OV                          =PSW^2; 
+sbit    P                           =PSW^0;  */
+ SBIT(CY, 0xD0, 7);
+ SBIT(AC, 0xD0, 6);
+ SBIT(F0, 0xD0, 5);
+ SBIT(RS1, 0xD0, 4);
+ SBIT(RS0, 0xD0, 3);
+ SBIT(OV, 0xD0, 2);
+/*  SBIT(xx, 0xD0, 1); */
+ SBIT(P, 0xD0, 0);
 #define IF_ODD(_OE_)                ACC=_OE_;if(P)
 
 
