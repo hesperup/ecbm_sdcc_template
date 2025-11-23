@@ -2,12 +2,23 @@
 #define _ECBM_UART_H_
 
 
+#define UART1_PIN_P30_P31 (0x00)
+#define UART1_PIN_P36_P37 (0x40)
+#define UART1_PIN_P16_P17 (0x80)
+#define UART1_PIN_P43_P44 (0xC0)
 
+#define UART1_PIN_P32_P33 (0x40)
+#define UART1_PIN_P54_P55 (0x80)
 
+#define UART2_PIN_P10_P11 (0x00)
+#define UART2_PIN_P40_P42 (0x01)
+#define UART2_PIN_P46_P47 (0x01)
 
+#define UART3_PIN_P00_P01 (0x00)
+#define UART3_PIN_P50_P51 (0x02)
 
-
-
+#define UART4_PIN_P02_P03 (0x00)
+#define UART4_PIN_P52_P53 (0x04)
 
 
 #define ECBM_UART_TX_MODE (1)
@@ -20,49 +31,13 @@
 
 #define ECBM_UART1_EN (1)
 
-
-
-
-
-
-
-
 #define ECBM_UART1_TX_BUF_MASK (0x3F)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-#define ECBM_UART1_BAUD_RATE (115200)
-
-
-
-
-
-
-
-
-
-
-
-
-
+#define ECBM_UART1_BAUD_RATE (9600)
 
 
 #define ECBM_UART1_SCON_CONFIG (0x50)
-
-
-
-
 
 
 
@@ -70,91 +45,35 @@
 
 
 
-
-
-
-
-
 #define ECBM_UART1_SADEN_CONFIG (0xFF)
-
-
-
-
 
 
 #define ECBM_UART1_PCON_CONFIG (0x00)
 
 
 
-
-
-
-
-
 #define ECBM_UART1_AUXR_CONFIG (0x00)
 
 
-
-
-
-
-
-
-#define ECBM_UART1_IO (0x00)
-
-
-
-
-
+#define ECBM_UART1_IO (UART1_PIN_P30_P31)
 
 
 #define ECBM_UART1_PARITY (0)
 
-#define ECBM_UART1_SEND_CALLBACK_EN (0)
+#define ECBM_UART1_SEND_CALLBACK_EN (1)
 
-#define ECBM_UART1_RECEIVE_CALLBACK_EN (0)
+#define ECBM_UART1_RECEIVE_CALLBACK_EN (1)
 
 #define ECBM_UART1_485_EN (0)
-
-
-
-
-
-
-
-
-
-
 
 
 #define ECBM_UART1_485_RE_PORT (0xC0)
 
 
-
-
-
-
-
-
-
 #define ECBM_UART1_485_RE_PIN  (0x03)
 
 
-
-
-
-
-
-
-
 #define ECBM_UART1_485_DE_PORT (0xC0)
-
-
-
-
-
-
-
 
 
 #define ECBM_UART1_485_DE_PIN  (0x03)
@@ -472,23 +391,7 @@
 
 #include "ecbm_core.h"
 
-#define UART1_PIN_P30_P31 (0x00)
-#define UART1_PIN_P36_P37 (0x40)
-#define UART1_PIN_P16_P17 (0x80)
-#define UART1_PIN_P43_P44 (0xC0)
 
-#define UART1_PIN_P32_P33 (0x40)
-#define UART1_PIN_P54_P55 (0x80)
-
-#define UART2_PIN_P10_P11 (0x00)
-#define UART2_PIN_P40_P42 (0x01)
-#define UART2_PIN_P46_P47 (0x01)
-
-#define UART3_PIN_P00_P01 (0x00)
-#define UART3_PIN_P50_P51 (0x02)
-
-#define UART4_PIN_P02_P03 (0x00)
-#define UART4_PIN_P52_P53 (0x04)
 
 
 
@@ -527,6 +430,8 @@ extern void uart_printf(u8 id,const char * str,...);
 extern void uart1_receive_callback(void);
 
 extern void uart1_send_callback(void);
+
+extern void uart1_beep_callback(void);
 
 extern void uart2_receive_callback(void);
 

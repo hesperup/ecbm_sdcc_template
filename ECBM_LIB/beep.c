@@ -8,6 +8,7 @@
 #define ECBM_BEEP_AUTO_OFF  (3)
 
 
+SBIT(BEEP_IO, ECBM_BEEP_IO_PORT, ECBM_BEEP_IO_PIN);
 
 u8 beep_on_time_gu8;
 u8 beep_off_time_gu8;

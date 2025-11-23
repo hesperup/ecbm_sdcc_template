@@ -92,8 +92,8 @@ targets:
     cppPreprocessAttrs:
       defineList: []
       incList:
-        - ECBM_LIB
         - device
+        - ECBM_LIB
       libList: []
     excludeList: []
     toolchain: GNU_SDCC_MCS51
@@ -131,7 +131,7 @@ targets:
             iram-size: "128"
             mem-model: small
             optimize-type: speed
-            xram-size: "0"
+            xram-size: "256"
           linker:
             output-format: elf
             remove-unused-input-sections: true
@@ -169,14 +169,14 @@ targets:
           beforeBuildTasks: []
           c/cpp-compiler:
             optimization-level: level-8
-            optimization-type: SPEED
+            optimization-type: SIZE
           global:
-            ram-mode: LARGE
-            rom-mode: LARGE
+            ram-mode: SMALL
+            rom-mode: SMALL
           linker:
-            misc-controls: ""
             output-format: elf
             remove-unused: true
+            use-RTX: None
       SDCC:
         options:
           version: 3
@@ -184,7 +184,7 @@ targets:
           asm-compiler: {}
           beforeBuildTasks: []
           c/cpp-compiler:
-            language-c: c89
+            language-c: c99
           global:
             device: mcs51
             optimize-type: speed

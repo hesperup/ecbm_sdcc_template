@@ -9,7 +9,7 @@
 
 #define SYSTEM_CLEAR_XDATA_LEN  (0)
 
-#define ECBM_SYSCLK_SETTING (24000000UL)
+#define ECBM_SYSCLK_SETTING (11059200UL)
 
 
 #define ECBM_SYSCLK_OUT_EN (0)
@@ -17,12 +17,6 @@
 
 
 #define ECBM_SYSLCK_OUT_PIN (1)
-
-
-
-
-
-
 
 
 
@@ -37,16 +31,16 @@
 
 
 
-#define ECBM_MCU_CHECK_EN  (1)
+#define ECBM_MCU_CHECK_EN  (0)
 
 
 
 
 
-#define ECBM_POWER_LIB_EN (1)
+#define ECBM_POWER_LIB_EN (0)
 
 
-#define ECBM_UART_LIB_EN (0)
+#define ECBM_UART_LIB_EN (1)
 
 
 
@@ -54,7 +48,7 @@
 
 
 
-#define ECBM_EXTI_LIB_EN (1)
+#define ECBM_EXTI_LIB_EN (0)
 
 
 #define ECBM_TIMER_LIB_EN (1)
@@ -135,12 +129,10 @@
 #define ECBM_10MS_TIMER (0)
 
 
-
 #define ECBM_STREAM_LIB_EN (0)
 
 
 #define ECBM_BEEP_EN    (0)
-
 
 
 

@@ -66,8 +66,8 @@ void eeprom_erase(u16 addr){
     IAP_CMD_ERASE;
     IAP_SET_REG_ADDR_HL(addr);
     IAP_TRIG_ON;
-    _nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
-    _nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
+    NOP();NOP();NOP();NOP();NOP();NOP();
+    NOP();NOP();NOP();NOP();NOP();NOP();
     eeprom_off();
 }
 
@@ -77,8 +77,8 @@ void eeprom_write(u16 addr,u8 dat){
     IAP_SET_REG_ADDR_HL(addr);
     IAP_SET_REG_DATA(dat);
     IAP_TRIG_ON;
-    _nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
-    _nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
+    NOP();NOP();NOP();NOP();NOP();NOP();
+    NOP();NOP();NOP();NOP();NOP();NOP();
     eeprom_off();
 }
 
@@ -88,8 +88,8 @@ u8 eeprom_read(u16 addr){
     IAP_CMD_READ;
     IAP_SET_REG_ADDR_HL(addr);
     IAP_TRIG_ON;
-    _nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
-    _nop_();_nop_();_nop_();_nop_();_nop_();_nop_();
+    NOP();NOP();NOP();NOP();NOP();NOP();
+    NOP();NOP();NOP();NOP();NOP();NOP();
     dat_u8=IAP_GET_REG_DATA;
     eeprom_off();
     return dat_u8;

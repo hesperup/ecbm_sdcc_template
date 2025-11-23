@@ -45,7 +45,7 @@ typedef unsigned char bit;
 /** Keil C51
   * http://www.keil.com
  */
-#elif defined __CX51__
+#else
 #define SBIT(name, addr, bit) sbit name = addr ^ bit
 #define SFR(name, addr) sfr name = addr
 #define SFRX(name, addr) volatile unsigned char xdata name _at_ addr
@@ -59,20 +59,48 @@ typedef unsigned char bit;
 #define INTERRUPT_USING(name, vector, regnum) void name(void) interrupt vector using regnum
 
 
-
 // NOP () macro support
 extern void _nop_(void);
 #define NOP() _nop_()
 
 #endif
 
-
-
-
+//<o>STC8系列型号选择
+//<i>列表提供的芯片类型都是在数据手册中出现的，仅根据理论进行设置，若有兼容性问题请入群告知我。
+//<i>ROM容量留空，在下一个选项中选择。
+//<0x110301=>STC8F1Kxx_8PIN
+//<0x110302=>STC8F1KxxS2_16PIN_20PIN
+//<0x120502=>STC8F2KxxS2_ALL
+//<0x120504=>STC8F2KxxS4_ALL
+//<0x2405C2=>STC8A4KxxS2A12_ALL
+//<0x2805C4=>STC8A8KxxS4A12_ALL
+//<0x2815C4=>STC8A8KxxD4_ALL
+//<0x310201=>STC8G1Kxx_8PIN
+//<0x3102A1=>STC8G1KxxA_8PIN
+//<0x3103A2=>STC8G1Kxx_16PIN_20PIN
+//<0x3103A1=>STC8G1KxxT_20PIN
+//<0x3205A2=>STC8G2KxxS2_ALL
+//<0x3205A4=>STC8G2KxxS4_ALL
+//<0x4103A2=>STC8H1Kxx_20PIN
+//<0x4105A2=>STC8H1Kxx_32PIN
+//<0x4305C2=>STC8H3KxxS2_ALL
+//<0x4305C4=>STC8H3KxxS4_ALL
+//<0x4805C4=>STC8H8KxxU_ALL
+//<0x520502=>STC8C2K64S2_ALL
+//<0x520504=>STC8C2K64S4_ALL
 #define ECBM_MCU (0x4805C4)
 
-
-#define ECBM_MCU_ROM_SIZE (64)
+//<o>ROM选择
+//<i>选择单片机的flash容量大小，主要影响唯一ID的读取。
+//<8=>08 
+//<12=>12 
+//<16=>16 
+//<17=>17 
+//<28=>28 
+//<32=>32 
+//<60=>60 
+//<64=>64
+#define ECBM_MCU_ROM_SIZE (8)
 
 #define __IO     volatile
 typedef unsigned char u8;
@@ -125,236 +153,233 @@ typedef   signed long s32;
 #endif
 #if 1
 
-__sfr __at(0x80) P0;
-__sfr __at(0x81) SP;
-__sfr __at(0x82) DPL;
-__sfr __at(0x83) DPH;
-__sfr __at(0x84) S4CON;
-__sfr __at(0x85) S4BUF;
-
-__sfr __at(0x87) PCON;
-
-__sfr __at(0x88) TCON;
-__sfr __at(0x89) TMOD;
-__sfr __at(0x8A) TL0;
-__sfr __at(0x8B) TL1;
-__sfr __at(0x8C) TH0;
-__sfr __at(0x8D) TH1;
-__sfr __at(0x8E) AUXR;
-__sfr __at(0x8F) INTCLKO;
-
-__sfr __at(0x90) P1;
-__sfr __at(0x91) P1M1;
-__sfr __at(0x92) P1M0;
-__sfr __at(0x93) P0M1;
-__sfr __at(0x94) P0M0;
-__sfr __at(0x95) P2M1;
-__sfr __at(0x96) P2M0;
-
-
-__sfr __at(0x98) SCON;
-__sfr __at(0x99) SBUF;
-__sfr __at(0x9A) S2CON;
-__sfr __at(0x9B) S2BUF;
-
-__sfr __at(0x9D) IRCBAND;
-__sfr __at(0x9E) LIRTRIM;
-__sfr __at(0x9F) IRTRIM;
-
-__sfr __at(0xA0) P2;
-__sfr __at(0xA1) BUS_SPEED;
-__sfr __at(0xA2) P_SW1;
-
-
-
-
-
-
-__sfr __at(0xA8) IE;
-__sfr __at(0xA9) SADDR;
-__sfr __at(0xAA) WKTCL;
-__sfr __at(0xAB) WKTCH;
+SFR(P0, 0x80);
+SFR(SP, 0x81);
+SFR(DPL, 0x82);
+SFR(DPH, 0x83);
+SFR(S4CON, 0x84);
+SFR(S4BUF, 0x85);
+SFR(PCON, 0x87);
+SFR(TCON, 0x88);
+SFR(TMOD, 0x89);
+SFR(TL0, 0x8A);
+SFR(TL1, 0x8B);
+SFR(TH0, 0x8C);
+SFR(TH1, 0x8D);
+SFR(AUXR, 0x8E);
+SFR(INTCLKO, 0x8F);
+SFR(P1, 0x90);
+SFR(P1M1, 0x91);
+SFR(P1M0, 0x92);
+SFR(P0M1, 0x93);
+SFR(P0M0, 0x94);
+SFR(P2M1, 0x95);
+SFR(P2M0, 0x96);
+SFR(SCON, 0x98);
+SFR(SBUF, 0x99);
+SFR(S2CON, 0x9A);
+SFR(S2BUF, 0x9B);
+SFR(IRCBAND, 0x9D);
+SFR(LIRTRIM, 0x9E);
+SFR(IRTRIM, 0x9F);
+SFR(P2, 0xA0);
+SFR(BUS_SPEED, 0xA1);
+SFR(P_SW1, 0xA2);
+SFR(IE, 0xA8);
+SFR(SADDR, 0xA9);
+SFR(WKTCL, 0xAA);
+SFR(WKTCH, 0xAB);
 /* Note: some SDCC versions warn about __sfr16 absolute addresses.
 	Use separate byte registers (WKTCL/WKTCH) and access via macros
 	to avoid "absolute address for __sfr ... probably out of range" warnings. */
-__sfr __at(0xAC) S3CON;
-__sfr __at(0xAD) S3BUF;
-__sfr __at(0xAE) TA;
-__sfr __at(0xAF) IE2;
+// 原始地址范围: 0xAC - 0xAF
+SFR(S3CON, 0xAC);
+SFR(S3BUF, 0xAD);
+SFR(TA, 0xAE);
+SFR(IE2, 0xAF);
 
-__sfr __at(0xB0) P3;
-__sfr __at(0xB1) P3M1;
-__sfr __at(0xB2) P3M0;
-__sfr __at(0xB3) P4M1;
-__sfr __at(0xB4) P4M0;
-__sfr __at(0xB5) IP2;
-__sfr __at(0xB6) IP2H;
-__sfr __at(0xB7) IPH;
+// 原始地址范围: 0xB0 - 0xBF
+SFR(P3, 0xB0);
+SFR(P3M1, 0xB1);
+SFR(P3M0, 0xB2);
+SFR(P4M1, 0xB3);
+SFR(P4M0, 0xB4);
+SFR(IP2, 0xB5);
+SFR(IP2H, 0xB6);
+SFR(IPH, 0xB7);
+SFR(IP, 0xB8);
+SFR(SADEN, 0xB9);
+SFR(P_SW2, 0xBA);
+SFR(VOCTRL, 0xBB);
+SFR(ADC_CONTR, 0xBC);
+SFR(ADC_RES, 0xBD);
+SFR(ADC_RESL, 0xBE);
 
-__sfr __at(0xB8) IP;
-__sfr __at(0xB9) SADEN;
-__sfr __at(0xBA) P_SW2;
-__sfr __at(0xBB) VOCTRL;
-__sfr __at(0xBC) ADC_CONTR;
-__sfr __at(0xBD) ADC_RES;
-__sfr __at(0xBE) ADC_RESL;
+// 原始地址范围: 0xC0 - 0xCF
+SFR(P4, 0xC0);
+SFR(WDT_CONTR, 0xC1);
+SFR(IAP_DATA, 0xC2);
+SFR(IAP_ADDRH, 0xC3);
+SFR(IAP_ADDRL, 0xC4);
+SFR(IAP_CMD, 0xC5);
+SFR(IAP_TRIG, 0xC6);
+SFR(IAP_CONTR, 0xC7);
+SFR(P5, 0xC8);
+SFR(P5M1, 0xC9);
+SFR(P5M0, 0xCA);
+SFR(P6M1, 0xCB);
+SFR(P6M0, 0xCC);
+SFR(SPSTAT, 0xCD);
+SFR(SPCTL, 0xCE);
+SFR(SPDAT, 0xCF);
+
+// 原始地址范围: 0xD0 - 0xDB
+SFR(PSW, 0xD0);
+SFR(T4T3M, 0xD1);
+SFR(T4H, 0xD2);
+SFR(T4L, 0xD3);
+SFR(T3H, 0xD4);
+SFR(T3L, 0xD5);
+SFR(T2H, 0xD6);
+SFR(T2L, 0xD7);
+SFR(CCON, 0xD8);
+SFR(CMOD, 0xD9);
+SFR(CCAPM0, 0xDA);
+SFR(CCAPM1, 0xDB);
 
 
-__sfr __at(0xC0) P4;
-__sfr __at(0xC1) WDT_CONTR;
-__sfr __at(0xC2) IAP_DATA;
-__sfr __at(0xC3) IAP_ADDRH;
-__sfr __at(0xC4) IAP_ADDRL;
-__sfr __at(0xC5) IAP_CMD;
-__sfr __at(0xC6) IAP_TRIG;
-__sfr __at(0xC7) IAP_CONTR;
-
-__sfr __at(0xC8) P5;
-__sfr __at(0xC9) P5M1;
-__sfr __at(0xCA) P5M0;
-__sfr __at(0xCB) P6M1;
-__sfr __at(0xCC) P6M0;
-__sfr __at(0xCD) SPSTAT;
-__sfr __at(0xCE) SPCTL;
-__sfr __at(0xCF) SPDAT;
-
-__sfr __at(0xD0) PSW;
-__sfr __at(0xD1) T4T3M;
-__sfr __at(0xD2) T4H;
-__sfr __at(0xD3) T4L;
-__sfr __at(0xD4) T3H;
-__sfr __at(0xD5) T3L;
-__sfr __at(0xD6) T2H;
-__sfr __at(0xD7) T2L;
-
-__sfr __at(0xD8) CCON;
-__sfr __at(0xD9) CMOD;
-__sfr __at(0xDA) CCAPM0;
-__sfr __at(0xDB) CCAPM1;
+// 地址范围: 0xDC - 0xDF
 #if (ECBM_MCU==0x4805C4)
-__sfr __at(0xDC) USBCLK;
+SFR(USBCLK, 0xDC);
 #else
-__sfr __at(0xDC) CCAPM2;
+SFR(CCAPM2, 0xDC);
 #endif
+
 #if (ECBM_MCU==0x2815C4)
+// CCAPM3 为 xdata 寄存器，保持原定义
 #define CCAPM3  read_xdata_u8(0xFD54)
 #else
-__sfr __at(0xDD) CCAPM3;
+SFR(CCAPM3, 0xDD);
 #endif
-__sfr __at(0xDE) ADC_CFG;
-__sfr __at(0xDF) IP3;
 
-__sfr __at(0xE0) ACC;
-__sfr __at(0xE1) P7M1;
-__sfr __at(0xE2) P7M0;
-__sfr __at(0xE3) DPS;
-__sfr __at(0xE4) DPL1;
-__sfr __at(0xE5) DPH1;
-__sfr __at(0xE6) CMPCR1;
-__sfr __at(0xE7) CMPCR2;
+SFR(ADC_CFG, 0xDE);
+SFR(IP3, 0xDF);
 
-__sfr __at(0xE8) P6;
-__sfr __at(0xE9) CL;
-__sfr __at(0xEA) CCAP0L;
-__sfr __at(0xEB) CCAP1L;
+// 地址范围: 0xE0 - 0xEF
+SFR(ACC, 0xE0);
+SFR(P7M1, 0xE1);
+SFR(P7M0, 0xE2);
+SFR(DPS, 0xE3);
+SFR(DPL1, 0xE4);
+SFR(DPH1, 0xE5);
+SFR(CMPCR1, 0xE6);
+SFR(CMPCR2, 0xE7);
+
+SFR(P6, 0xE8);
+SFR(CL, 0xE9);
+SFR(CCAP0L, 0xEA);
+SFR(CCAP1L, 0xEB);
+
 #if (ECBM_MCU==0x4805C4)
-__sfr __at(0xEC) USBDAT;
+SFR(USBDAT, 0xEC);
 #else
-__sfr __at(0xEC) CCAP2L;
+SFR(CCAP2L, 0xEC);
 #endif
+
 #if (ECBM_MCU==0x2815C4)
+// CCAP3L 为 xdata 寄存器，保持原定义
 #define CCAP3L  read_xdata_u8(0xFD55)
 #else
-__sfr __at(0xED) CCAP3L;
+SFR(CCAP3L, 0xED);
 #endif
-__sfr __at(0xEE) IP3H;
-__sfr __at(0xEF) AUXINTIF;
 
-__sfr __at(0xF0) B;
+SFR(IP3H, 0xEE);
+SFR(AUXINTIF, 0xEF);
+
+// 地址范围: 0xF0 - 0xFF
+SFR(B, 0xF0);
+
 #if (ECBM_MCU==0x3205A4)||(ECBM_MCU==0x2815C4)
-__sfr __at(0xF1) PWMSET;
-#endif
-#if (ECBM_MCU==0x2405C2)||(ECBM_MCU==0x2805C4)
-__sfr __at(0xF1) PWMCFG;
-#endif
-__sfr __at(0xF2) PCA_PWM0;
-__sfr __at(0xF3) PCA_PWM1;
-#if (ECBM_MCU==0x4805C4)
-__sfr __at(0xF4) USBCON;
-#else
-__sfr __at(0xF4) PCA_PWM2;
-#endif
-#if (ECBM_MCU==0x2405C2)||(ECBM_MCU==0x2805C4)
-__sfr __at(0xF5) PCA_PWM3;
-#else
-__sfr __at(0xF5) IAP_TPS;
-#endif
-#if (ECBM_MCU==0x2815C4)
-#define PCA_PWM3    read_xdata_u8(0xFD57)
-#endif
-#if (ECBM_MCU==0x2815C4)
-__sfr __at(0xF6) PWMCFG;
-#endif
-#if (ECBM_MCU==0x2405C2)||(ECBM_MCU==0x2805C4)
-__sfr __at(0xF6) PWMIF;
-__sfr __at(0xF7) PWMFDCR;
-#endif
-#if (ECBM_MCU==0x3205A2)||(ECBM_MCU==0x3205A4)
-__sfr __at(0xF6) PWMCFG01;
-__sfr __at(0xF7) PWMCFG23;
+SFR(PWMSET, 0xF1);
 #endif
 
-__sfr __at(0xF8) P7;
-__sfr __at(0xF9) CH;
-__sfr __at(0xFA) CCAP0H;
-__sfr __at(0xFB) CCAP1H;
-#if (ECBM_MCU==0x4805C4)
-__sfr __at(0xFC) USBADR;
-#else
-__sfr __at(0xFC) CCAP2H;
+#if (ECBM_MCU==0x2405C2)||(ECBM_MCU==0x2805C4)
+SFR(PWMCFG, 0xF1);
 #endif
+
+SFR(PCA_PWM0, 0xF2);
+SFR(PCA_PWM1, 0xF3);
+
+#if (ECBM_MCU==0x4805C4)
+SFR(USBCON, 0xF4);
+#else
+SFR(PCA_PWM2, 0xF4);
+#endif
+
+#if (ECBM_MCU==0x2405C2)||(ECBM_MCU==0x2805C4)
+SFR(PCA_PWM3, 0xF5);
+#else
+SFR(IAP_TPS, 0xF5);
+#endif
+
 #if (ECBM_MCU==0x2815C4)
+// PCA_PWM3 为 xdata 寄存器，保持原定义
+#define PCA_PWM3    read_xdata_u8(0xFD57)
+SFR(PWMCFG, 0xF6);
+#endif
+
+#if (ECBM_MCU==0x2405C2)||(ECBM_MCU==0x2805C4)
+SFR(PWMIF, 0xF6);
+SFR(PWMFDCR, 0xF7);
+#endif
+
+#if (ECBM_MCU==0x3205A2)||(ECBM_MCU==0x3205A4)
+SFR(PWMCFG01, 0xF6);
+SFR(PWMCFG23, 0xF7);
+#endif
+
+SFR(P7, 0xF8);
+SFR(CH, 0xF9);
+SFR(CCAP0H, 0xFA);
+SFR(CCAP1H, 0xFB);
+
+#if (ECBM_MCU==0x4805C4)
+SFR(USBADR, 0xFC);
+#else
+SFR(CCAP2H, 0xFC);
+#endif
+
+#if (ECBM_MCU==0x2815C4)
+// CCAP3H 为 xdata 寄存器，保持原定义
 #define CCAP3H  read_xdata_u8(0xFD56)
 #else
-__sfr __at(0xFD) CCAP3H;
+SFR(CCAP3H, 0xFD);
 #endif
+
 #if (ECBM_MCU==0x2405C2)||(ECBM_MCU==0x2805C4)
-__sfr __at(0xFE) PWMCR;
+SFR(PWMCR, 0xFE);
 #endif
+
 #if (ECBM_MCU==0x3205A4)
-__sfr __at(0xFE) PWMCFG45;
+SFR(PWMCFG45, 0xFE);
 #endif
-__sfr __at(0xFF) RSTCFG;
+
+SFR(RSTCFG, 0xFF);
 
 #endif
 #if 1
 /* Restored bit-addressable sbits for SDCC */
 /* TCON (0x88) bits */
-/* __sbit __at(0x80) IT0;
-__sbit __at(0x81) IE0;
-__sbit __at(0x82) IT1;
-__sbit __at(0x83) IE1;
-__sbit __at(0x84) TR0;
-__sbit __at(0x85) TF0;
-__sbit __at(0x86) TR1;
-__sbit __at(0x87) TF1; */
-
- SBIT(IT0, 0x80, 0);
- SBIT(IE0, 0x80, 1);
- SBIT(IT1, 0x80, 2);
- SBIT(IE1, 0x80, 3);
- SBIT(TR0, 0x80, 4);
- SBIT(TF0, 0x80, 5);
- SBIT(TR1, 0x80, 6);
- SBIT(TF1, 0x80, 7);
+ SBIT(IT0, 0x88, 0);
+ SBIT(IE0, 0x88, 1);
+ SBIT(IT1, 0x88, 2);
+ SBIT(IE1, 0x88, 3);
+ SBIT(TR0, 0x88, 4);
+ SBIT(TF0, 0x88, 5);
+ SBIT(TR1, 0x88, 6);
+ SBIT(TF1, 0x88, 7);
 
 /*need to fix IE (0xA8) bits */
-/* __sbit __at(0xA0) EX0;
-__sbit __at(0xA1) ET0;
-__sbit __at(0xA2) EX1;
-__sbit __at(0xA3) ET1;
-__sbit __at(0xA4) ES;
-__sbit __at(0xA7) EA; */
  SBIT(EX0, 0xA8, 0);
  SBIT(ET0, 0xA8, 1);
  SBIT(EX1, 0xA8, 2);
@@ -365,13 +390,6 @@ __sbit __at(0xA7) EA; */
  SBIT(EA, 0xA8, 7);
 
 /* need to fix IP (0xB8) bits (priority low bits) */
-/* __sbit __at(0xB0) PX0;
-__sbit __at(0xB1) PT0;
-__sbit __at(0xB2) PX1;
-__sbit __at(0xB3) PT1;
-__sbit __at(0xB4) PS; 
-__sbit __at(0xB6) P36;*/
-
  SBIT(PX0, 0xB8, 0);
  SBIT(PT0, 0xB8, 1);
  SBIT(PX1, 0xB8, 2);
@@ -382,14 +400,6 @@ __sbit __at(0xB6) P36;*/
 
 
 /* need to fix SCON(0x98)bits*/
-/* __sbit __at(0x90) SM0;
-__sbit __at(0x91) SM1;
-__sbit __at(0x92) SM2;
-__sbit __at(0x93) REN;
-__sbit __at(0x94) TB8;
-__sbit __at(0x95) RB8;
-__sbit __at(0x96) TI;
-__sbit __at(0x97) RI; */
  SBIT(SM0, 0x98, 7);
  SBIT(SM1, 0x98, 6);
  SBIT(SM2, 0x98, 5);
@@ -2247,70 +2257,70 @@ __sbit __at(0x97) RI; */
 
 
 /*-------------------------------I/O口特殊功能寄存器-----------------------------*/
-/* sbit    P00                         =P0^0;  //P0.0口
-sbit    P01                         =P0^1;  //P0.1口
-sbit    P02                         =P0^2;  //P0.2口
-sbit    P03                         =P0^3;  //P0.3口
-sbit    P04                         =P0^4;  //P0.4口
-sbit    P05                         =P0^5;  //P0.5口
-sbit    P06                         =P0^6;  //P0.6口
-sbit    P07                         =P0^7;  //P0.7口
-sbit    P10                         =P1^0;  //P1.0口
-sbit    P11                         =P1^1;  //P1.1口
-sbit    P12                         =P1^2;  //P1.2口
-sbit    P13                         =P1^3;  //P1.3口
-sbit    P14                         =P1^4;  //P1.4口
-sbit    P15                         =P1^5;  //P1.5口
-sbit    P16                         =P1^6;  //P1.6口
-sbit    P17                         =P1^7;  //P1.7口
-sbit    P20                         =P2^0;  //P2.0口
-sbit    P21                         =P2^1;  //P2.1口
-sbit    P22                         =P2^2;  //P2.2口
-sbit    P23                         =P2^3;  //P2.3口
-sbit    P24                         =P2^4;  //P2.4口
-sbit    P25                         =P2^5;  //P2.5口
-sbit    P26                         =P2^6;  //P2.6口
-sbit    P27                         =P2^7;  //P2.7口
-sbit    P30                         =P3^0;  //P3.0口
-sbit    P31                         =P3^1;  //P3.1口
-sbit    P32                         =P3^2;  //P3.2口
-sbit    P33                         =P3^3;  //P3.3口
-sbit    P34                         =P3^4;  //P3.4口
-sbit    P35                         =P3^5;  //P3.5口
-sbit    P36                         =P3^6;  //P3.6口
-sbit    P37                         =P3^7;  //P3.7口
-sbit    P40                         =P4^0;  //P4.0口
-sbit    P41                         =P4^1;  //P4.1口
-sbit    P42                         =P4^2;  //P4.2口
-sbit    P43                         =P4^3;  //P4.3口
-sbit    P44                         =P4^4;  //P4.4口
-sbit    P45                         =P4^5;  //P4.5口
-sbit    P46                         =P4^6;  //P4.6口
-sbit    P47                         =P4^7;  //P4.7口
-sbit    P50                         =P5^0;  //P5.0口
-sbit    P51                         =P5^1;  //P5.1口
-sbit    P52                         =P5^2;  //P5.2口
-sbit    P53                         =P5^3;  //P5.3口
-sbit    P54                         =P5^4;  //P5.4口
-sbit    P55                         =P5^5;  //P5.5口
-sbit    P56                         =P5^6;  //P5.6口
-sbit    P57                         =P5^7;  //P5.7口
-sbit    P60                         =P6^0;  //P6.0口
-sbit    P61                         =P6^1;  //P6.1口
-sbit    P62                         =P6^2;  //P6.2口
-sbit    P63                         =P6^3;  //P6.3口
-sbit    P64                         =P6^4;  //P6.4口
-sbit    P65                         =P6^5;  //P6.5口
-sbit    P66                         =P6^6;  //P6.6口
-sbit    P67                         =P6^7;  //P6.7口
-sbit    P70                         =P7^0;  //P7.0口
-sbit    P71                         =P7^1;  //P7.1口
-sbit    P72                         =P7^2;  //P7.2口
-sbit    P73                         =P7^3;  //P7.3口
-sbit    P74                         =P7^4;  //P7.4口
-sbit    P75                         =P7^5;  //P7.5口
-sbit    P76                         =P7^6;  //P7.6口
-sbit    P77                         =P7^7;  //P7.7口 */
+/* sbit    P00                         =P0^0;  //P0.0�?
+sbit    P01                         =P0^1;  //P0.1�?
+sbit    P02                         =P0^2;  //P0.2�?
+sbit    P03                         =P0^3;  //P0.3�?
+sbit    P04                         =P0^4;  //P0.4�?
+sbit    P05                         =P0^5;  //P0.5�?
+sbit    P06                         =P0^6;  //P0.6�?
+sbit    P07                         =P0^7;  //P0.7�?
+sbit    P10                         =P1^0;  //P1.0�?
+sbit    P11                         =P1^1;  //P1.1�?
+sbit    P12                         =P1^2;  //P1.2�?
+sbit    P13                         =P1^3;  //P1.3�?
+sbit    P14                         =P1^4;  //P1.4�?
+sbit    P15                         =P1^5;  //P1.5�?
+sbit    P16                         =P1^6;  //P1.6�?
+sbit    P17                         =P1^7;  //P1.7�?
+sbit    P20                         =P2^0;  //P2.0�?
+sbit    P21                         =P2^1;  //P2.1�?
+sbit    P22                         =P2^2;  //P2.2�?
+sbit    P23                         =P2^3;  //P2.3�?
+sbit    P24                         =P2^4;  //P2.4�?
+sbit    P25                         =P2^5;  //P2.5�?
+sbit    P26                         =P2^6;  //P2.6�?
+sbit    P27                         =P2^7;  //P2.7�?
+sbit    P30                         =P3^0;  //P3.0�?
+sbit    P31                         =P3^1;  //P3.1�?
+sbit    P32                         =P3^2;  //P3.2�?
+sbit    P33                         =P3^3;  //P3.3�?
+sbit    P34                         =P3^4;  //P3.4�?
+sbit    P35                         =P3^5;  //P3.5�?
+sbit    P36                         =P3^6;  //P3.6�?
+sbit    P37                         =P3^7;  //P3.7�?
+sbit    P40                         =P4^0;  //P4.0�?
+sbit    P41                         =P4^1;  //P4.1�?
+sbit    P42                         =P4^2;  //P4.2�?
+sbit    P43                         =P4^3;  //P4.3�?
+sbit    P44                         =P4^4;  //P4.4�?
+sbit    P45                         =P4^5;  //P4.5�?
+sbit    P46                         =P4^6;  //P4.6�?
+sbit    P47                         =P4^7;  //P4.7�?
+sbit    P50                         =P5^0;  //P5.0�?
+sbit    P51                         =P5^1;  //P5.1�?
+sbit    P52                         =P5^2;  //P5.2�?
+sbit    P53                         =P5^3;  //P5.3�?
+sbit    P54                         =P5^4;  //P5.4�?
+sbit    P55                         =P5^5;  //P5.5�?
+sbit    P56                         =P5^6;  //P5.6�?
+sbit    P57                         =P5^7;  //P5.7�?
+sbit    P60                         =P6^0;  //P6.0�?
+sbit    P61                         =P6^1;  //P6.1�?
+sbit    P62                         =P6^2;  //P6.2�?
+sbit    P63                         =P6^3;  //P6.3�?
+sbit    P64                         =P6^4;  //P6.4�?
+sbit    P65                         =P6^5;  //P6.5�?
+sbit    P66                         =P6^6;  //P6.6�?
+sbit    P67                         =P6^7;  //P6.7�?
+sbit    P70                         =P7^0;  //P7.0�?
+sbit    P71                         =P7^1;  //P7.1�?
+sbit    P72                         =P7^2;  //P7.2�?
+sbit    P73                         =P7^3;  //P7.3�?
+sbit    P74                         =P7^4;  //P7.4�?
+sbit    P75                         =P7^5;  //P7.5�?
+sbit    P76                         =P7^6;  //P7.6�?
+sbit    P77                         =P7^7;  //P7.7�?*/
 
 
  SBIT(P00, 0x80, 0);
@@ -2385,7 +2395,7 @@ sbit    P77                         =P7^7;  //P7.7口 */
  SBIT(P76, 0xF8, 6);
  SBIT(P77, 0xF8, 7);
 
-/*--------------------------------内核特殊功能寄存器------------------------------*/
+/*--------------------------------内核特殊功能寄存�?-----------------------------*/
 /* sbit    CY                          =PSW^7;
 sbit    AC                          =PSW^6;
 sbit    F0                          =PSW^5; 

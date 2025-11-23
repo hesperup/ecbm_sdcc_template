@@ -79,6 +79,7 @@
 #       endif
 #   endif
 #endif
+
 #if (ECBM_UART2_EN)
 #   if (ECBM_UART2_PARITY!=0)
 #       if ((ECBM_UART2_S2CON_CONFIG&0x80)!=0x80)
@@ -90,6 +91,7 @@
 #       endif
 #   endif
 #endif
+
 #if (ECBM_UART3_EN)
 #   if (ECBM_UART3_PARITY!=0)
 #       if ((ECBM_UART3_S3CON_CONFIG&0x80)!=0x80)
@@ -101,6 +103,7 @@
 #       endif
 #   endif
 #endif
+
 #if (ECBM_UART4_EN)
 #   if (ECBM_UART4_PARITY!=0)
 #       if ((ECBM_UART4_S4CON_CONFIG&0x80)!=0x80)
@@ -141,26 +144,31 @@
 #       error 串口1和串口2的波特率产生器（定时器2）冲突。请更换串口1的波特率产生器或者将串口1和串口2的波特率调成一致。
 #   endif
 #endif
+
 #if (ECBM_UART1_EN)&&(ECBM_UART1_AUXR_CONFIG&0x01)&&(ECBM_UART3_EN)&&((ECBM_UART3_S3CON_CONFIG&0x40)==0x00)
 #   if  (ECBM_UART1_BAUD_RATE != ECBM_UART3_BAUD_RATE)
 #       error 串口1和串口3的波特率产生器（定时器2）冲突。请更换串口1或串口3的波特率产生器或者将串口1和串口3的波特率调成一致。
 #   endif
 #endif
+
 #if (ECBM_UART1_EN)&&(ECBM_UART1_AUXR_CONFIG&0x01)&&(ECBM_UART4_EN)&&((ECBM_UART4_S4CON_CONFIG&0x40)==0x00)
 #   if  (ECBM_UART1_BAUD_RATE != ECBM_UART4_BAUD_RATE)
 #       error 串口1和串口4的波特率产生器（定时器2）冲突。请更换串口1或串口4的波特率产生器或者将串口1和串口4的波特率调成一致。
 #   endif
 #endif
+
 #if (ECBM_UART2_EN)&&(ECBM_UART3_EN)&&((ECBM_UART3_S3CON_CONFIG&0x40)==0x00)
 #   if  (ECBM_UART2_BAUD_RATE != ECBM_UART3_BAUD_RATE)
 #       error 串口2和串口3的波特率产生器（定时器2）冲突。请更换串口3的波特率产生器或者将串口2和串口3的波特率调成一致。
 #   endif
 #endif
+
 #if (ECBM_UART2_EN)&&(ECBM_UART4_EN)&&((ECBM_UART4_S4CON_CONFIG&0x40)==0x00)
 #   if  (ECBM_UART2_BAUD_RATE != ECBM_UART4_BAUD_RATE)
 #       error 串口2和串口4的波特率产生器（定时器2）冲突。请更换串口4的波特率产生器或者将串口2和串口4的波特率调成一致。
 #   endif
 #endif
+
 #if (ECBM_UART3_EN)&&((ECBM_UART3_S3CON_CONFIG&0x40)==0x00)&&(ECBM_UART4_EN)&&((ECBM_UART4_S4CON_CONFIG&0x40)==0x00)
 #   if  (ECBM_UART3_BAUD_RATE != ECBM_UART4_BAUD_RATE)
 #       error 串口3和串口4的波特率产生器（定时器2）冲突。请更换串口3或串口4的波特率产生器或者将串口3和串口4的波特率调成一致。
@@ -171,14 +179,17 @@
 
 
 #endif
+
 #if (ECBM_UART2_485_EN)
 
 
 #endif
+
 #if (ECBM_UART3_485_EN)
 
 
 #endif
+
 #if (ECBM_UART4_485_EN)
 
 
@@ -497,166 +508,174 @@ void uart_set_baud(u8 id,u32 baud){
 }
 
 #if (ECBM_UART_TX_MODE)
-#if (ECBM_UART1_EN)
-void uart1_tx_trig(void){
-    u8 ch=uart1_tx_buf[uart1_tx_buf_read_point];
-    #if (ECBM_UART1_485_EN)
-        UART1_485_RE_IO=1;
-        UART1_485_DE_IO=1;
-    #endif
-    #if (ECBM_UART1_PARITY==1)
-        IF_ODD(ch){
-            UART1_SET_TXD_BYTE9_0;
-        }else{
+    #if (ECBM_UART1_EN)
+    void uart1_tx_trig(void){
+        u8 ch=uart1_tx_buf[uart1_tx_buf_read_point];
+        #if (ECBM_UART1_485_EN)
+            UART1_485_RE_IO=1;
+            UART1_485_DE_IO=1;
+        #endif
+        #if (ECBM_UART1_PARITY==1)
+            IF_ODD(ch){
+                UART1_SET_TXD_BYTE9_0;
+            }else{
+                UART1_SET_TXD_BYTE9_1;
+            }
+        #elif (ECBM_UART1_PARITY==2)
+            IF_ODD(ch){
+                UART1_SET_TXD_BYTE9_1;
+            }else{
+                UART1_SET_TXD_BYTE9_0;
+            }
+        #elif (ECBM_UART1_PARITY==3)
             UART1_SET_TXD_BYTE9_1;
-        }
-    #elif (ECBM_UART1_PARITY==2)
-        IF_ODD(ch){
-            UART1_SET_TXD_BYTE9_1;
-        }else{
+        #elif (ECBM_UART1_PARITY==4)
             UART1_SET_TXD_BYTE9_0;
-        }
-    #elif (ECBM_UART1_PARITY==3)
-        UART1_SET_TXD_BYTE9_1;
-    #elif (ECBM_UART1_PARITY==4)
-        UART1_SET_TXD_BYTE9_0;
+        #endif
+        UART1_SET_REG_SBUF(ch);
+        uart1_tx_buf_read_point++;
+        uart1_tx_buf_read_point&=ECBM_UART1_TX_BUF_MASK;
+        uart1_busy_gb=1;
+    }
+    void uart1_tx_end(void){
+        uart1_busy_gb=0;
+        #if (ECBM_UART1_485_EN)
+            UART1_485_RE_IO=0;
+            UART1_485_DE_IO=0;
+        #endif
+    }
     #endif
-    UART1_SET_REG_SBUF(ch);
-    uart1_tx_buf_read_point++;
-    uart1_tx_buf_read_point&=ECBM_UART1_TX_BUF_MASK;
-    uart1_busy_gb=1;
-}
-void uart1_tx_end(void){
-    uart1_busy_gb=0;
-    #if (ECBM_UART1_485_EN)
-        UART1_485_RE_IO=0;
-        UART1_485_DE_IO=0;
-    #endif
-}
-#endif
-#if (ECBM_UART2_EN)
-void uart2_tx_trig(void){
-    u8 ch=uart2_tx_buf[uart2_tx_buf_read_point];
-    #if (ECBM_UART2_485_EN)
-        UART2_485_RE_IO=1;
-        UART2_485_DE_IO=1;
-    #endif
-    #if (ECBM_UART2_PARITY==1)
-        IF_ODD(ch){
-            UART2_SET_TXD_BYTE9_0;
-        }else{
+
+    #if (ECBM_UART2_EN)
+    void uart2_tx_trig(void){
+        u8 ch=uart2_tx_buf[uart2_tx_buf_read_point];
+        #if (ECBM_UART2_485_EN)
+            UART2_485_RE_IO=1;
+            UART2_485_DE_IO=1;
+        #endif
+        #if (ECBM_UART2_PARITY==1)
+            IF_ODD(ch){
+                UART2_SET_TXD_BYTE9_0;
+            }else{
+                UART2_SET_TXD_BYTE9_1;
+            }
+        #elif (ECBM_UART2_PARITY==2)
+            IF_ODD(ch){
+                UART2_SET_TXD_BYTE9_1;
+            }else{
+                UART2_SET_TXD_BYTE9_0;
+            }
+        #elif (ECBM_UART2_PARITY==3)
             UART2_SET_TXD_BYTE9_1;
-        }
-    #elif (ECBM_UART2_PARITY==2)
-        IF_ODD(ch){
-            UART2_SET_TXD_BYTE9_1;
-        }else{
+        #elif (ECBM_UART2_PARITY==4)
             UART2_SET_TXD_BYTE9_0;
-        }
-    #elif (ECBM_UART2_PARITY==3)
-        UART2_SET_TXD_BYTE9_1;
-    #elif (ECBM_UART2_PARITY==4)
-        UART2_SET_TXD_BYTE9_0;
-    #endif
-    UART2_SET_REG_S2BUF(ch);
-    uart2_tx_buf_read_point++;
-    uart2_tx_buf_read_point&=ECBM_UART2_TX_BUF_MASK;
-    uart2_busy_gb=1;
-}
-void uart2_tx_end(void){
-    uart2_busy_gb=0;
-    #if (ECBM_UART2_485_EN)
-        UART2_485_RE_IO=0;
-        UART2_485_DE_IO=0;
-    #endif
-}
-#endif
-#if (ECBM_UART3_EN)
-void uart3_tx_trig(void){
-    u8 ch=uart3_tx_buf[uart3_tx_buf_read_point];
-    #if (ECBM_UART3_485_EN)
-        UART3_485_RE_IO=1;
-        UART3_485_DE_IO=1;
-    #endif
-    #if   (ECBM_UART3_PARITY==1)
-        IF_ODD(ch){
-            UART3_SET_TXD_BYTE9_0;
-        }else{
+        #endif
+        UART2_SET_REG_S2BUF(ch);
+        uart2_tx_buf_read_point++;
+        uart2_tx_buf_read_point&=ECBM_UART2_TX_BUF_MASK;
+        uart2_busy_gb=1;
+    }
+    void uart2_tx_end(void){
+        uart2_busy_gb=0;
+        #if (ECBM_UART2_485_EN)
+            UART2_485_RE_IO=0;
+            UART2_485_DE_IO=0;
+        #endif
+    }
+    #endif                                                          
+    #if (ECBM_UART3_EN)
+    void uart3_tx_trig(void){
+        u8 ch=uart3_tx_buf[uart3_tx_buf_read_point];
+        #if (ECBM_UART3_485_EN)
+            UART3_485_RE_IO=1;
+            UART3_485_DE_IO=1;
+        #endif
+        #if   (ECBM_UART3_PARITY==1)
+            IF_ODD(ch){
+                UART3_SET_TXD_BYTE9_0;
+            }else{
+                UART3_SET_TXD_BYTE9_1;
+            }
+        #elif (ECBM_UART3_PARITY==2)
+            IF_ODD(ch){
+                UART3_SET_TXD_BYTE9_1;
+            }else{
+                UART3_SET_TXD_BYTE9_0;
+            }
+        #elif (ECBM_UART3_PARITY==3)
             UART3_SET_TXD_BYTE9_1;
-        }
-    #elif (ECBM_UART3_PARITY==2)
-        IF_ODD(ch){
-            UART3_SET_TXD_BYTE9_1;
-        }else{
+        #elif (ECBM_UART3_PARITY==4)
             UART3_SET_TXD_BYTE9_0;
-        }
-    #elif (ECBM_UART3_PARITY==3)
-        UART3_SET_TXD_BYTE9_1;
-    #elif (ECBM_UART3_PARITY==4)
-        UART3_SET_TXD_BYTE9_0;
+        #endif
+        UART3_SET_REG_S3BUF(ch);
+        uart3_tx_buf_read_point++;
+        uart3_tx_buf_read_point&=ECBM_UART3_TX_BUF_MASK;
+        uart3_busy_gb=1;
+    }
+    void uart3_tx_end(void){
+        uart3_busy_gb=0;
+        #if (ECBM_UART3_485_EN)
+            UART3_485_RE_IO=0;
+            UART3_485_DE_IO=0;
+        #endif
+    }
     #endif
-    UART3_SET_REG_S3BUF(ch);
-    uart3_tx_buf_read_point++;
-    uart3_tx_buf_read_point&=ECBM_UART3_TX_BUF_MASK;
-    uart3_busy_gb=1;
-}
-void uart3_tx_end(void){
-    uart3_busy_gb=0;
-    #if (ECBM_UART3_485_EN)
-        UART3_485_RE_IO=0;
-        UART3_485_DE_IO=0;
-    #endif
-}
-#endif
-#if (ECBM_UART4_EN)
-void uart4_tx_trig(void){
-    u8 ch=uart4_tx_buf[uart4_tx_buf_read_point];
-    #if (ECBM_UART4_485_EN)
-        UART4_485_RE_IO=1;
-        UART4_485_DE_IO=1;
-    #endif
-    #if   (ECBM_UART4_PARITY==1)
-        IF_ODD(ch){
-            UART4_SET_TXD_BYTE9_0;
-        }else{
+    #if (ECBM_UART4_EN)
+    void uart4_tx_trig(void){
+        u8 ch=uart4_tx_buf[uart4_tx_buf_read_point];
+        #if (ECBM_UART4_485_EN)
+            UART4_485_RE_IO=1;
+            UART4_485_DE_IO=1;
+        #endif
+        #if   (ECBM_UART4_PARITY==1)
+            IF_ODD(ch){
+                UART4_SET_TXD_BYTE9_0;
+            }else{
+                UART4_SET_TXD_BYTE9_1;
+            }
+        #elif (ECBM_UART4_PARITY==2)
+            IF_ODD(ch){
+                UART4_SET_TXD_BYTE9_1;
+            }else{
+                UART4_SET_TXD_BYTE9_0;
+            }
+        #elif (ECBM_UART4_PARITY==3)
             UART4_SET_TXD_BYTE9_1;
-        }
-    #elif (ECBM_UART4_PARITY==2)
-        IF_ODD(ch){
-            UART4_SET_TXD_BYTE9_1;
-        }else{
+        #elif (ECBM_UART4_PARITY==4)
             UART4_SET_TXD_BYTE9_0;
-        }
-    #elif (ECBM_UART4_PARITY==3)
-        UART4_SET_TXD_BYTE9_1;
-    #elif (ECBM_UART4_PARITY==4)
-        UART4_SET_TXD_BYTE9_0;
+        #endif
+        UART4_SET_REG_S4BUF(ch);
+        uart4_tx_buf_read_point++;
+        uart4_tx_buf_read_point&=ECBM_UART4_TX_BUF_MASK;
+        uart4_busy_gb=1;
+    }
+    void uart4_tx_end(void){
+        uart4_busy_gb=0;
+        #if (ECBM_UART4_485_EN)
+            UART4_485_RE_IO=0;
+            UART4_485_DE_IO=0;
+        #endif
+    }
     #endif
-    UART4_SET_REG_S4BUF(ch);
-    uart4_tx_buf_read_point++;
-    uart4_tx_buf_read_point&=ECBM_UART4_TX_BUF_MASK;
-    uart4_busy_gb=1;
-}
-void uart4_tx_end(void){
-    uart4_busy_gb=0;
-    #if (ECBM_UART4_485_EN)
-        UART4_485_RE_IO=0;
-        UART4_485_DE_IO=0;
-    #endif
-}
 #endif
-#endif
+
 void uart_char(u8 id,u8 ch){
     switch(id){
         #if (ECBM_UART1_EN)
             case 1:{
+    
                 #if (ECBM_UART_TX_MODE)
+                    
                     uart1_tx_buf[uart1_tx_buf_write_point]=ch;
                     uart1_tx_buf_write_point++;
                     uart1_tx_buf_write_point&=ECBM_UART1_TX_BUF_MASK;
+                 /*    //todo need to fix
+                    // uart1_busy_gb=0; */
                     if(uart1_busy_gb==0){
                         uart1_tx_trig();
                     }
+                    
+                    
                 #else
                     #if (ECBM_UART1_485_EN)
                         UART1_485_RE_IO=1;
@@ -908,7 +927,7 @@ void uart_string(u8 id,u8 * str){
 
 #if ((ECBM_UART_PRINTF_EN)&&(ECBM_PRINTF_EN))
     void uart_printf(u8 id,const char * str,...){
-        char xdata buf[ECBM_UART_PRINTF_BUF_MAX];
+        static  char xdata buf[ECBM_UART_PRINTF_BUF_MAX];
         va_list vp;
         va_start(vp, str);
 
@@ -917,6 +936,7 @@ void uart_string(u8 id,u8 * str){
         uart_string(id,buf);
     }
 #endif
+
 #endif
 
 

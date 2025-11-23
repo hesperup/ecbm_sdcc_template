@@ -27,7 +27,8 @@
             "editor.insertSpaces": true,
             "editor.tabSize": 4,
             "editor.autoIndent": "advanced"
-        }
+        },
+        "CodeGPT.apiKey": "Gemini CLI"
     },
     "extensions": {
         "recommendations": [

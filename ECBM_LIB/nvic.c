@@ -175,27 +175,48 @@
 
 #if (ECBM_EXTI_LIB_EN)
     #if (ECBM_EXTI0_EN)
-        void nvic_exti0_function(void) interrupt (0) {
+
+     #if defined(SDCC) || defined(__SDCC)  
+    void nvic_exti0_function(void) __interrupt (0) {
+        #else
+                void nvic_exti0_function(void) interrupt 0 {
+            #endif
             exti0_it_callback();
         }
     #endif
     #if (ECBM_EXTI1_EN)
-        void nvic_exti1_function(void) interrupt (2) {
+     #if defined(SDCC) || defined(__SDCC)  
+        void nvic_exti1_function(void) __interrupt (2) {
+            #else
+                void nvic_exti1_function(void) interrupt 2 {
+            #endif
             exti1_it_callback();
         }
     #endif
     #if (ECBM_EXTI2_EN)
-        void nvic_exti2_function(void) interrupt (10) {
+     #if defined(SDCC) || defined(__SDCC)  
+        void nvic_exti2_function(void) __interrupt (10) {
+            #else
+                void nvic_exti2_function(void) interrupt 10 {
+            #endif
             exti2_it_callback();
         }
     #endif
     #if (ECBM_EXTI3_EN)
-        void nvic_exti3_function(void) interrupt (11) {
+     #if defined(SDCC) || defined(__SDCC)  
+        void nvic_exti3_function(void) __interrupt (11) {
+            #else
+                void nvic_exti3_function(void) interrupt 11 {
+            #endif
             exti3_it_callback();
         }
     #endif
     #if (ECBM_EXTI4_EN)
-        void nvic_exti4_function(void) interrupt (16) {
+     #if defined(SDCC) || defined(__SDCC)  
+        void nvic_exti4_function(void) __interrupt (16) {
+            #else
+                void nvic_exti4_function(void) interrupt 16 {
+            #endif
             exti4_it_callback();
         }
     #endif
@@ -204,20 +225,29 @@
 extern void beep_run(void);
 #if ((ECBM_TIMER_LIB_EN)||(ECBM_10MS_EN))
     #if (((ECBM_TIMER0_EN)&&(ECBM_TIMER0_IT_EN))||(ECBM_10MS_TIMER==0))
-        void nvic_timer0_function(void) interrupt (1) {
-            #if ((ECBM_TIMER0_EN)&&(ECBM_TIMER0_IT_EN))
-                timer0_it_callback();
+            #if defined(SDCC) || defined(__SDCC)
+                void nvic_timer0_function(void) __interrupt (1) {
+            #else
+                void nvic_timer0_function(void) interrupt 1 {
             #endif
-            #if ((ECBM_10MS_EN)&&(ECBM_10MS_TIMER==0)&&(ECBM_STREAM_LIB_EN))
-                ecbm_stream_timer_run();
-            #endif
-            #if ((ECBM_10MS_EN)&&(ECBM_10MS_TIMER==0)&&(ECBM_BEEP_EN))
-                beep_run();
-            #endif
+                #if ((ECBM_TIMER0_EN)&&(ECBM_TIMER0_IT_EN))
+                    timer0_it_callback();
+                #endif
+                #if ((ECBM_10MS_EN)&&(ECBM_10MS_TIMER==0)&&(ECBM_STREAM_LIB_EN))
+                    ecbm_stream_timer_run();
+                #endif
+                #if ((ECBM_10MS_EN)&&(ECBM_10MS_TIMER==0)&&(ECBM_BEEP_EN))
+                    beep_run();
+                #endif
+           
         }
     #endif
     #if (((ECBM_TIMER1_EN)&&(ECBM_TIMER1_IT_EN))||(ECBM_10MS_TIMER==1))
-        void nvic_timer1_function(void) interrupt (3) {
+            #if defined(SDCC) || defined(__SDCC)
+                void nvic_timer1_function(void) __interrupt (3) {
+            #else
+                void nvic_timer1_function(void) interrupt (3) {
+            #endif
             #if ((ECBM_TIMER1_EN)&&(ECBM_TIMER1_IT_EN))
                 timer1_it_callback();
             #endif
@@ -230,7 +260,11 @@ extern void beep_run(void);
         }
     #endif
     #if (((ECBM_TIMER2_EN)&&(ECBM_TIMER2_IT_EN))||(ECBM_10MS_TIMER==2))
-        void nvic_timer2_function(void) interrupt (12) {
+            #if defined(SDCC) || defined(__SDCC)   
+                void nvic_timer2_function(void) __interrupt (12) {
+            #else
+                void nvic_timer2_function(void) interrupt 12 {
+            #endif
             #if ((ECBM_TIMER2_EN)&&(ECBM_TIMER2_IT_EN))
                 timer2_it_callback();
             #endif
@@ -243,7 +277,11 @@ extern void beep_run(void);
         }
     #endif
     #if (((ECBM_TIMER3_EN)&&(ECBM_TIMER3_IT_EN))||(ECBM_10MS_TIMER==3))
-        void nvic_timer3_function(void) interrupt (19) {
+            #if defined(SDCC) || defined(__SDCC)    
+                void nvic_timer3_function(void) __interrupt (19) {
+            #else
+                void nvic_timer3_function(void) interrupt 19 {
+            #endif
             #if ((ECBM_TIMER3_EN)&&(ECBM_TIMER3_IT_EN))
                 timer3_it_callback();
             #endif
@@ -256,7 +294,11 @@ extern void beep_run(void);
         }
     #endif
     #if (((ECBM_TIMER4_EN)&&(ECBM_TIMER4_IT_EN))||(ECBM_10MS_TIMER==4))
-        void nvic_timer4_function(void) interrupt (20) {
+            #if defined(SDCC) || defined(__SDCC)  
+                void nvic_timer4_function(void) __interrupt (20) {
+             #else
+                void nvic_timer4_function(void) interrupt 20 {
+            #endif
             #if ((ECBM_TIMER4_EN)&&(ECBM_TIMER4_IT_EN))
                 timer4_it_callback();
             #endif
@@ -275,7 +317,12 @@ extern void beep_run(void);
         extern bit uart1_busy_gb;
         extern void uart1_tx_trig(void);
         extern void uart1_tx_end(void);
-        void nvic_uart1_function(void) interrupt (4) {
+         #if defined(SDCC) || defined(__SDCC)  
+        void nvic_uart1_function(void) __interrupt (4) {
+            #else
+                void nvic_uart1_function(void) interrupt 4 {
+            #endif
+            P15=0x00;
             if(UART1_GET_RI_FLAG){
                 UART1_CLR_RI_FLAG;
                 #if (ECBM_UART1_RECEIVE_CALLBACK_EN)
@@ -310,13 +357,17 @@ extern void beep_run(void);
                     uart1_send_callback();
                 #endif
             }
-        }
+        } 
     #endif
     #if (ECBM_UART2_EN)
         extern bit uart2_busy_gb;
         extern void uart2_tx_trig(void);
         extern void uart2_tx_end(void);
-        void nvic_uart2_function(void) interrupt (8) {
+         #if defined(SDCC) || defined(__SDCC)  
+        void nvic_uart2_function(void) __interrupt (8) {
+            #else
+                void nvic_uart2_function(void) interrupt 8 {
+            #endif
             if(UART2_GET_RI_FLAG){
                 UART2_CLR_RI_FLAG;
                 #if (ECBM_UART2_RECEIVE_CALLBACK_EN)
@@ -354,7 +405,11 @@ extern void beep_run(void);
         extern bit uart3_busy_gb;
         extern void uart3_tx_trig(void);
         extern void uart3_tx_end(void);
-        void nvic_uart3_function(void) interrupt (17) {
+         #if defined(SDCC) || defined(__SDCC)  
+        void nvic_uart3_function(void) __interrupt (17) {
+            #else
+                void nvic_uart3_function(void) interrupt 17 {
+            #endif
             if(UART3_GET_RI_FLAG){
                 UART3_CLR_RI_FLAG;
                 #if (ECBM_UART3_RECEIVE_CALLBACK_EN)
@@ -392,7 +447,11 @@ extern void beep_run(void);
         extern bit uart4_busy_gb;
         extern void uart4_tx_trig(void);
         extern void uart4_tx_end(void);
-        void nvic_uart4_function(void) interrupt (18) {
+         #if defined(SDCC) || defined(__SDCC)  
+        void nvic_uart4_function(void) __interrupt (18) {
+            #else
+                void nvic_uart4_function(void) interrupt 18 {
+            #endif
             if(UART4_GET_RI_FLAG){
                 UART4_CLR_RI_FLAG;
                 #if (ECBM_UART4_RECEIVE_CALLBACK_EN)
@@ -429,21 +488,33 @@ extern void beep_run(void);
 #endif
 
 #if ((ECBM_ADC_LIB_EN)&&(ECBM_ADC_IT_EN))
-    void nvic_adc_function(void) interrupt (5) {
+ #if defined(SDCC) || defined(__SDCC)  
+    void nvic_adc_function(void) __interrupt (5) {
+        #else
+                void nvic_adc_function(void) interrupt 5 {
+            #endif
         ADC_CLS_IT_FLAG;
         adc_it_callback();
     }
 #endif
 
 #if ((ECBM_POWER_LIB_EN)&&(ECBM_POWER_RST_CFG_EN))
-    void nvic_lvd_function(void) interrupt (6) {
+ #if defined(SDCC) || defined(__SDCC)  
+void nvic_lvd_function(void) __interrupt (6) {
+    #else
+                void nvic_lvd_function(void) interrupt 6 {
+            #endif
         LVD_CLS_IT_FLAG;
         lvd_it_callback();
     }
 #endif
 
 #if (ECBM_PCA_LIB_EN)
-    void nvic_pca_function(void) interrupt (7) {
+ #if defined(SDCC) || defined(__SDCC)  
+    void nvic_pca_function(void) __interrupt (7) {
+        #else
+                void nvic_pca_function(void) interrupt 7 {
+            #endif
         if(PCA_GET_IT_FLAG){
             PCA_CLS_IT_FLAG;
             #if (ECBM_PCA_CALLBACK_EN)
@@ -510,7 +581,11 @@ extern void beep_run(void);
 #endif
 
 #if ((ECBM_SPI_LIB_EN)&&(ECBM_SPI_IT_EN))
-    void nvic_spi_function(void) interrupt (9) {
+ #if defined(SDCC) || defined(__SDCC)  
+    void nvic_spi_function(void) __interrupt (9) {
+        #else
+                void nvic_spi_function(void) interrupt 9 {
+            #endif
         spi_it_callback();
     }
 #endif
@@ -526,7 +601,11 @@ extern void beep_run(void);
     extern bit eiicp_trig_gb;
     extern u8  eiicp_data_count_gu8;
     extern u8  eiicp_data_buf_gu8a[ECBM_IIC_BUF_MAX];
-    void nvic_iic_function(void) interrupt (24) {
+     #if defined(SDCC) || defined(__SDCC)  
+    void nvic_iic_function(void) __interrupt (24) {
+        #else
+                void nvic_iic_function(void) interrupt 24 {
+            #endif
     if(IIC_GET_M_IT_FLAG){
         IIC_CLS_M_IT_FLAG;
         iic_master_busy_gb=0;

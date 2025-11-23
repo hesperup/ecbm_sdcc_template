@@ -2,165 +2,59 @@
 #define _ECBM_TIMER_H_
 
 
-
-
-
 #define ECBM_TIMER0_EN (1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #define ECBM_TIMER0_TMOD (0x00)
 
-
-
-
 #define ECBM_TIMER0_AUXR (0x80)
 
-
 #define ECBM_TIMER0_INTCLKO (0x00)
-
-
-
-
-
 
 #define ECBM_TIMER0_COUNT (65500)
 
 #define ECBM_TIMER0_IT_EN (1)
 
 
-
 #define ECBM_TIMER1_EN (0)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #define ECBM_TIMER1_TMOD (0x00)
 
-
-
-
 #define ECBM_TIMER1_AUXR (0x40)
 
-
 #define ECBM_TIMER1_INTCLKO (0x00)
-
-
-
-
-
 
 #define ECBM_TIMER1_COUNT (65535)
 
 #define ECBM_TIMER1_IT_EN (0)
 
 
-
 #define ECBM_TIMER2_EN (0)
-
-
-
-
-
-
-
-
 
 #define ECBM_TIMER2_AUXR (0x04)
 
-
 #define ECBM_TIMER2_INTCLKO (0x00)
 
-
-
-
-
-
 #define ECBM_TIMER2_COUNT (500)
-
 
 #define ECBM_TIMER2_IT_EN (0)
 
 
-
 #define ECBM_TIMER3_EN (0)
-
-
-
-
-
-
-
-
-
-
 
 #define ECBM_TIMER3_T4T3M (0x00)
 
-
-
-
-
-
 #define ECBM_TIMER3_COUNT (65535)
-
 
 #define ECBM_TIMER3_IT_EN (0)
 
 
-
 #define ECBM_TIMER4_EN (0)
-
-
-
-
-
-
-
-
-
-
 
 #define ECBM_TIMER4_T4T3M (0x00)
 
-
-
-
-
-
 #define ECBM_TIMER4_COUNT (10000)
 
-
 #define ECBM_TIMER4_IT_EN (0)
-
 
 
 
