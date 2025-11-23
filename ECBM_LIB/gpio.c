@@ -208,10 +208,10 @@ u8 code ecbm_pin_mask_gcu8a[]={0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80};
             #if (ECBM_GPIO7_EN)
                 case 0x70:{
                     switch(mode){
-                        case GPIO_PU:{P7M1&=~ecbm_pin_u8;P7M0&=~ecbm_pin_u8;}break;
-                        case GPIO_HZ:{P7M1|= ecbm_pin_u8;P7M0&=~ecbm_pin_u8;}break;
-                        case GPIO_OD:{P7M1|= ecbm_pin_u8;P7M0|= ecbm_pin_u8;}break;
-                        case GPIO_PP:{P7M1&=~ecbm_pin_u8;P7M0|= ecbm_pin_u8;}break;
+                        // case GPIO_PU:{P7M1&=~ecbm_pin_u8;P7M0&=~ecbm_pin_u8;}break;
+                        // case GPIO_HZ:{P7M1|= ecbm_pin_u8;P7M0&=~ecbm_pin_u8;}break;
+                        // case GPIO_OD:{P7M1|= ecbm_pin_u8;P7M0|= ecbm_pin_u8;}break;
+                        // case GPIO_PP:{P7M1&=~ecbm_pin_u8;P7M0|= ecbm_pin_u8;}break;
                     }
                 }break;
             #endif
