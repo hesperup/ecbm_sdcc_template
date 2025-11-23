@@ -51,11 +51,10 @@
 #define ECBM_UART1_PCON_CONFIG (0x00)
 
 
-
 #define ECBM_UART1_AUXR_CONFIG (0x00)
 
 
-#define ECBM_UART1_IO (UART1_PIN_P30_P31)
+#define ECBM_UART1_IO (0x00)
 
 
 #define ECBM_UART1_PARITY (0)

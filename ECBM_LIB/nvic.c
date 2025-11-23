@@ -314,16 +314,17 @@ extern void beep_run(void);
 
 #if (ECBM_UART_LIB_EN)
     #if (ECBM_UART1_EN)
-        extern bit uart1_busy_gb;
-        extern void uart1_tx_trig(void);
-        extern void uart1_tx_end(void);
-         #if defined(SDCC) || defined(__SDCC)  
-        void nvic_uart1_function(void) __interrupt (4) {
+            extern bit uart1_busy_gb;
+            extern void uart1_tx_trig(void);
+            extern void uart1_tx_end(void);
+            #if defined(SDCC) || defined(__SDCC)  
+                void nvic_uart1_function(void) __interrupt (4) {
             #else
                 void nvic_uart1_function(void) interrupt 4 {
             #endif
-            P15=0x00;
+            
             if(UART1_GET_RI_FLAG){
+                // P13= 0x00;
                 UART1_CLR_RI_FLAG;
                 #if (ECBM_UART1_RECEIVE_CALLBACK_EN)
                     uart1_receive_callback();
@@ -343,6 +344,7 @@ extern void beep_run(void);
                 #endif
             }
             if(UART1_GET_TI_FLAG){
+                // P15=0x00;
                 UART1_CLR_TI_FLAG;
                 #if (ECBM_UART_TX_MODE)
                     if(uart1_tx_buf_read_point!=uart1_tx_buf_write_point){
@@ -354,6 +356,7 @@ extern void beep_run(void);
                     uart1_busy_gb=0;
                 #endif
                 #if (ECBM_UART1_SEND_CALLBACK_EN)
+                    // P16=0x00;
                     uart1_send_callback();
                 #endif
             }

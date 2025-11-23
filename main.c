@@ -1,12 +1,13 @@
  #include "ecbm_core.h" 
+ #include <stdio.h>
 
-// #if defined(SDCC) || defined(__SDCC)
+#if defined(SDCC) || defined(__SDCC)
 
  void nvic_timer0_function(void) __interrupt (1); 
  
  void nvic_uart1_function(void) __interrupt (4);
 
-// #endif
+#endif
 
   u16 j;
   u16 m;
@@ -15,14 +16,7 @@
   u32 count;
   u16 i;
   u8 num,a;
-//  void timer_start(u8 id);
-
-//  void timer_init(void);
-
-//  void timer_set_timer_mode(u8 id,u16 us);
-
-
-
+  u8 fval ;
 void main(void){  
     count = 0;  
     i=0;
@@ -32,37 +26,48 @@ void main(void){
     timer_set_timer_mode(0,30000);
     timer_start(0);
     // P1 = 0x00; 
-
-    /* eeprom_init();
-    eeprom_write(20,25);
-
-    delay_us(500);   
-
-    u8 fval=eeprom_read(20);
-    uart_char(1,fval);
-    eeprom_erase(20);
-
-    eeprom_write(20,15);
-
-    delay_us(500);   
-
-    u8 sval=eeprom_read(20);
-
-    uart_char(1,sval); */
-
-    for( j=200;j>0;j--)
+    uart_init();
+    eeprom_init();
+    for( j=100;j>0;j--)
     {
       P36^=1;      
       delay_us(500);   
     }
+    uart_string(1,"Hello World");
+ 
+    delay_ms(100);   
 
-    // uart_init();
-    // unsigned int i=0;
-    // uart_set_io(1,UART1_PIN_P30_P31);
-    // uart_set_baud(1,9600); */
+    uart_char(1,'7');
+    uart_char(1,'8');
+    uart_char(1,'9');
+
+    eeprom_erase(0);
+    eeprom_write(0,'2');
+
+    delay_ms(500);   
+
     
-  
-    uart_char(1,'2');
+    fval= eeprom_read(0);
+    uart_char(1,fval);
+
+
+     uart_string(1,"fuckyou");
+    // uart_string(1,fval);
+   
+    // eeprom_erase(20);
+
+    // eeprom_write(20,0x02);
+
+    // delay_ms(1000);   
+
+    // u8 sval=eeprom_read(20);
+
+    // uart_char(1,sval);
+
+    // uart_char(1,0);
+    while(1){
+
+    }
 }
 
 
@@ -72,17 +77,14 @@ void main(void){
   {
     count = 333; 
     P1 = ~P1; 
-    // P1 = 0xff;
-    uart_char(1,1);
   } 
 } 
-void uart1_beep_callback(void){
-    P36= 0x00;
-}
+
 void uart1_receive_callback(void){
-     P36= 0x00;
+    P36^=1;  
+    uart_char(1,SBUF);
 }
 
 void uart1_send_callback(void){
-    P36= 0x00;
+    P36^=1; 
 }

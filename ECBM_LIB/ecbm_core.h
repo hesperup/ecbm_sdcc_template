@@ -54,7 +54,7 @@
 #define ECBM_TIMER_LIB_EN (1)
 
 
-#define ECBM_EEPROM_LIB_EN (0)
+#define ECBM_EEPROM_LIB_EN (1)
 
 
 #define ECBM_SPI_LIB_EN (0)
@@ -99,7 +99,7 @@
 
 
 
-#define ECBM_PRINTF_EN (0)
+#define ECBM_PRINTF_EN (1)
 
 
 

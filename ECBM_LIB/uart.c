@@ -69,15 +69,15 @@
 
 
 #if (ECBM_UART1_EN)
-#   if (ECBM_UART1_PARITY!=0)
-#       if ((ECBM_UART1_SCON_CONFIG&0x80)!=0x80)
-#           error   若想开启串口1的校验功能，请把工作模式设置为9位！
-#       endif
-#   else
-#       if ((ECBM_UART1_SCON_CONFIG&0x80)&&((ECBM_UART1_SCON_CONFIG&0x20)==0))
-#           warning 串口1当前没有开启校验或者多机通信功能，请留意一下工作模式是否一定设置为9位。
-#       endif
-#   endif
+    #if (ECBM_UART1_PARITY!=0)
+       #if ((ECBM_UART1_SCON_CONFIG&0x80)!=0x80)
+           #error   若想开启串口1的校验功能，请把工作模式设置为9位！
+       #endif
+    #else
+       #if ((ECBM_UART1_SCON_CONFIG&0x80)&&((ECBM_UART1_SCON_CONFIG&0x20)==0))
+            #warning 串口1当前没有开启校验或者多机通信功能，请留意一下工作模式是否一定设置为9位。
+       #endif
+    #endif
 #endif
 
 #if (ECBM_UART2_EN)
@@ -198,18 +198,18 @@
 
 void uart_init(void){
     #if (ECBM_UART1_EN)
-        UART1_SET_REG_SCON  (ECBM_UART1_SCON_CONFIG);
-        UART1_SET_REG_PCON  (ECBM_UART1_PCON_CONFIG);
-        UART1_SET_REG_AUXR  (ECBM_UART1_AUXR_CONFIG);
-        uart_set_io         (1,ECBM_UART1_IO);
-        uart_set_baud       (1,ECBM_UART1_BAUD_RATE);
+        UART1_SET_REG_SCON  (ECBM_UART1_SCON_CONFIG);//写入SCON配置，包含工作模式、接收使能、多机通信的选项。
+        UART1_SET_REG_PCON  (ECBM_UART1_PCON_CONFIG); //写入PCON配置，包含波特率加倍。
+        UART1_SET_REG_AUXR  (ECBM_UART1_AUXR_CONFIG);//写入AUXR配置，包含加倍控制、波特率发生器选择。
+        uart_set_io         (1,ECBM_UART1_IO);          //写入IO选择控制位。
+        uart_set_baud       (1,ECBM_UART1_BAUD_RATE);   //设置波特率。
         #if (ECBM_UART1_SCON_CONFIG&0x20)
             UART1_SET_REG_SADDR (ECBM_UART1_SADDR_CONFIG);
             UART1_SET_REG_SADEN (ECBM_UART1_SADEN_CONFIG);
         #endif
         #if ((ECBM_UART1_AUXR_CONFIG&0x01)==0)
             TIMER1_SET_MODE_1T;
-            TIMER1_SET_REG_TMOD(0);
+            TIMER1_SET_REG_TMOD(0x20);
             TIMER1_IT_DISABLE;
             TIMER1_POWER_ON;
         #else
@@ -222,6 +222,7 @@ void uart_init(void){
             uart1_tx_buf_write_point=0;
             uart1_tx_buf_read_point=0;
         #endif
+    
         UART1_IT_ENABLE;
         #if (ECBM_UART1_485_EN)
             UART1_485_RE_IO=0;
@@ -471,6 +472,9 @@ void uart_set_io(u8 id,u8 io){
 void uart_set_baud(u8 id,u32 baud){
     u16 res_u16;
     res_u16=(u16)(65536-(u16)(ECBM_SYSCLK_SETTING/4/baud));
+    // TH1=0xfd;
+	// TL1=0xfd;
+    res_u16 = 0xfdfd;
     switch(id){
         #if (ECBM_UART1_EN)
             case 1:{
@@ -669,8 +673,7 @@ void uart_char(u8 id,u8 ch){
                     uart1_tx_buf[uart1_tx_buf_write_point]=ch;
                     uart1_tx_buf_write_point++;
                     uart1_tx_buf_write_point&=ECBM_UART1_TX_BUF_MASK;
-                 /*    //todo need to fix
-                    // uart1_busy_gb=0; */
+                    // P10 = 0x00; 
                     if(uart1_busy_gb==0){
                         uart1_tx_trig();
                     }
